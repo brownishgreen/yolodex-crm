@@ -2,7 +2,6 @@
   <div class="contact-list">
     <aside class="contact-list__aside">
       <div class="contact-list__search">
-        <font-awesome-icon icon="fa-solid fa-search" class="search-icon" />
         <input type="text" placeholder="        Search contact..." class="contact-list__search-input" v-model="searchQuery"/>
       </div>
       <div class="contact-list__items">
@@ -63,11 +62,14 @@ const filteredContacts = computed(() =>
 }
 
 .contact-list {
-  width: 50%;
+  width: 100%;
   height: 100%;
   display: flex;
   flex-direction: column;
   border-right: 2px solid #ccc;
+  @media (min-width: 768px) {
+      width: 50%;
+    }
   .contact-list__search {
     padding: 1rem;
     display: flex;
@@ -104,7 +106,7 @@ const filteredContacts = computed(() =>
     min-height: 0;
     flex: 1;
     overflow-y: auto;
-    padding: 0 1.5rem;
+    padding: 0 3rem;
     ul {
       list-style: none;
       padding: 0;
