@@ -1,6 +1,7 @@
 <template>
   <footer class="text-sm text-center justify-center">
-    <p>&copy; 2025 YOLODEX</p>
+    <p style="font-size: 1.2rem;">A minimalist relationship management app for everyone.</p>
+    <p style="font-size: 0.9rem;">&copy; 2025 YOLODEX</p>
   </footer>
 </template>
 
@@ -9,10 +10,11 @@
 footer {
   background-color: $primary-green;
   color: $primary-yellow;
-  height: 80px;
+  height: 79.95px;
   display: flex;
   align-items: center;
   justify-content: center;
+  flex-direction: column;
   width: 80vw;
   border-radius: 0 0 25px 25px;
   outline: 4px solid $outline-color;
