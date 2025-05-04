@@ -2,7 +2,7 @@
 
 import { Contact } from '../types/contact'
 
-export const contacts: Contact[] = [
+export const contactsData: Contact[] = [
   {
     id: '1',
     name: 'Sandra Adams',

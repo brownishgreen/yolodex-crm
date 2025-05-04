@@ -13,7 +13,9 @@ footer {
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.1);
+  width: 80vw;
+  border-radius: 0 0 25px 25px;
+  outline: 4px solid $outline-color;
   p {
     font-size: 1rem;
     font-weight: 300;
