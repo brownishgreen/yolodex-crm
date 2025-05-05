@@ -3,13 +3,16 @@
     <div class="flex justify-between items-center">
       <img src="/src/assets/image/yolodex-logo.png" alt="Yolodex Logo"/>
       <div class="flex justify-between items-center">
-        <button class="create-contact-btn">+ New Contact</button>
+        <button @click="$emit('create')" class="create-contact-btn">+ New Contact</button>
       </div>
     </div>
   </header>
 </template>
 
 <script setup lang="ts">
+defineEmits<{
+  (e: 'create'): void
+}>()
 </script>
 <style scoped lang="scss">
 @use '@/styles/variables' as *;

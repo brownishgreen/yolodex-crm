@@ -1,11 +1,14 @@
 <template>
   <div class="contact-panel">
+    <!-- <div class="floating-form">
+      <ContactForm />
+    </div> -->
     <ContactList
       :contacts="contacts"
       :selected="selectedContact"
       @select="selectContact"
     />
-
+    
     <!-- desktop mode: show detail directly -->
     <ContactDetail
       v-if="!isMobile"
@@ -21,6 +24,7 @@
 <script setup lang="ts">
 import ContactList from './ContactList.vue';
 import ContactDetail from './ContactDetail.vue';
+import ContactForm from './ContactForm.vue';
 import Modal from './Modal.vue';
 import { ref, onMounted } from 'vue';
 //get contacts data and type
@@ -31,6 +35,7 @@ const isMobile = ref(false);
 const isDetailOpen = ref(false);
 const contacts = ref<Contact[]>(contactsData);
 const selectedContact = ref<Contact | null>(contacts.value[0] || null);
+const isFormOpen = ref(false);
 
 function handleResize() {
   isMobile.value = window.innerWidth < 768;
@@ -68,5 +73,13 @@ function selectContact(contact: Contact) {
       flex-direction: column;
       height: 100vh;
     }
+}
+
+.floating-form {
+  position: absolute;
+  top: 10%;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 1000;
 }
 </style>
