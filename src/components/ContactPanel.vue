@@ -24,18 +24,19 @@
 <script setup lang="ts">
 import ContactList from './ContactList.vue';
 import ContactDetail from './ContactDetail.vue';
-import ContactForm from './ContactForm.vue';
 import Modal from './Modal.vue';
 import { ref, onMounted } from 'vue';
 //get contacts data and type
 import type { Contact } from '@/types/contact';
 import { contactsData } from '@/data/contacts';
 
+const props = defineProps<{
+  contacts: Contact[]
+}>();
+
 const isMobile = ref(false);
 const isDetailOpen = ref(false);
-const contacts = ref<Contact[]>(contactsData);
-const selectedContact = ref<Contact | null>(contacts.value[0] || null);
-const isFormOpen = ref(false);
+const selectedContact = ref<Contact | null>(props.contacts[0] || null);
 
 function handleResize() {
   isMobile.value = window.innerWidth < 768;
