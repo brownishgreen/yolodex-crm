@@ -3,7 +3,7 @@
     <div class="flex justify-between items-center">
       <img src="/src/assets/image/yolodex-logo.png" alt="Yolodex Logo"/>
       <div class="flex justify-between items-center">
-        <button @click="$emit('create')" class="create-contact-btn">+ New Contact</button>
+        <button @click="$emit('create')" class="create-contact-btn"> + New</button>
       </div>
     </div>
   </header>

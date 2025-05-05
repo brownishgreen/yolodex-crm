@@ -1,7 +1,7 @@
 <template>
   <footer class="text-sm text-center justify-center">
-    <p style="font-size: 1.2rem;">A minimalist relationship management app for everyone.</p>
-    <p style="font-size: 0.9rem;">&copy; 2025 YOLODEX</p>
+    <p>A minimalist relationship management app for everyone.</p>
+    <p>&copy; 2025 YOLODEX</p>
   </footer>
 </template>
 
@@ -21,6 +21,14 @@ footer {
   p {
     font-size: 1rem;
     font-weight: 300;
+  }
+}
+
+@media (max-width: 768px) {
+  footer {
+    p {
+      font-size: 0.7rem;
+    }
   }
 }
 </style>

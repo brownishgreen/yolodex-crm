@@ -2,7 +2,7 @@
   <div class="contact-list">
     <aside class="contact-list__aside">
       <div class="contact-list__search">
-        <input type="text" placeholder="        Search contact..." class="contact-list__search-input" v-model="searchQuery"/>
+        <input type="text" placeholder="Search contact..." class="contact-list__search-input" v-model="searchQuery"/>
       </div>
       <div class="contact-list__items">
         <ul class="contact-items">

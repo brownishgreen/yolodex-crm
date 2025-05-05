@@ -12,11 +12,17 @@ const isMobile = ref(window.innerWidth < 768)
 const isDetailOpen = ref(false)
 const selectedContact = ref<Contact | null>(null)
 const isFormOpen = ref(false)
+const contacts = ref<Contact[]>(contactsData)
 function selectContact(contact: Contact) {
   selectedContact.value = contact
   if (isMobile.value) {
     isDetailOpen.value = true
   }
+}
+
+function handleAddContact(contact: Contact) {
+  contacts.value.push(contact)
+  isFormOpen.value = false
 }
 
 </script>
@@ -25,9 +31,10 @@ function selectContact(contact: Contact) {
   <div class="container">
     <div class="body-container">
       <BaseHeader @create="isFormOpen = true" />
-      <ContactPanel />
+      <ContactPanel :contacts="contacts" />
+      <!-- Modal for the form -->
       <Modal v-if="isFormOpen" @close="isFormOpen = false">
-        <ContactForm />
+        <ContactForm @submit="handleAddContact" />
       </Modal>
       <BaseFooter />
     </div>
@@ -43,22 +50,20 @@ function selectContact(contact: Contact) {
 <style scoped lang="scss">
 @use '@/styles/variables' as *;
 .container {
-  .body-container {
-  width: 100%;
+  width: 100vw;
   height: 100vh;
-  background-color: #000000;
+  padding:1rem;
   background-image: url('https://images.unsplash.com/photo-1664735245698-b05abf000d4c?q=80&w=1470&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D');
-  background-size: cover;
-  background-position: center;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  .body-content {
+
+  .body-container {
     width: 100%;
-      height: 100%;
-      background-color: $primary-yellow;
-    }
+    height: 100%;
+    background-size: cover;
+    background-position: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
   }
 }
 </style>

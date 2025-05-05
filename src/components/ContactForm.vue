@@ -1,34 +1,34 @@
 <template>
   <div class="contact-form">
     <h2 style="text-align: center;" class="form-title">Create New Contact</h2>
-    <form>
+    <form @submit.prevent="handleSubmit">
       <div class="form-group">
         <label for="name">Name</label>
-        <input type="text" id="name" name="name" required>
+        <input v-model="formDataSubmit.name" type="text" id="name" name="name" required>
       </div>
       <div class="form-group">
         <label for="email">Email</label>
-        <input type="email" id="email" name="email" required>
+        <input v-model="formDataSubmit.email" type="email" id="email" name="email" required>
       </div>
       <div class="form-group">
         <label for="phone">Phone</label>
-        <input type="tel" id="phone" name="phone" required>
+        <input v-model="formDataSubmit.phone" type="tel" id="phone" name="phone" required>
       </div>
       <div class="form-group">
         <label for="company">Company</label>
-        <input type="text" id="company" name="company" required>
+        <input v-model="formDataSubmit.company" type="text" id="company" name="company" required>
       </div>
       <div class="form-group">
         <label for="jobTitle">Job Title</label>
-        <input type="text" id="jobTitle" name="jobTitle" required>
+        <input v-model="formDataSubmit.jobTitle" type="text" id="jobTitle" name="jobTitle" required>
       </div>
       <div class="form-group">
         <label for="notes">Notes</label>
-        <textarea id="notes" name="notes" required></textarea>
+        <textarea v-model="formDataSubmit.notes" id="notes" name="notes" required></textarea>
       </div>
       <div class="form-group">
         <label for="status">Status</label>
-        <select id="status" name="status" required>
+        <select v-model="formDataSubmit.status" id="status" name="status" required>
           <option value="active">Active</option>
           <option value="inactive">Inactive</option>
         </select>
@@ -39,6 +39,36 @@
 </template>
 
 <script setup lang="ts">
+import { reactive } from 'vue';
+import type { Contact } from '@/types/contact';
+
+//define a reactive contact object
+const formDataSubmit = reactive<Omit<Contact, 'id' | 'createdAt' | 'updatedAt'>>({
+  name: '',
+  email: '',
+  phone: '',
+  company: '',
+  jobTitle: '',
+  notes: '',
+  status: 'active',
+});
+
+function handleSubmit() {
+  const newContact = {
+    id: Date.now().toString(),
+    ...formDataSubmit, //format the contact object
+    createdAt: new Date(),
+    updatedAt: new Date(),
+  };
+
+  //emit the new contact to the parent component
+  emit('submit', newContact);
+}
+
+const emit = defineEmits<{
+  (e: 'submit', contact: Contact): void
+}>();
+
 </script>
 
 <style scoped lang="scss">
