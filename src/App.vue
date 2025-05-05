@@ -2,16 +2,42 @@
 import BaseHeader from './components/BaseHeader.vue'
 import BaseFooter from './components/BaseFooter.vue'
 import ContactPanel from './components/ContactPanel.vue'
+import { ref } from 'vue'
+import type { Contact } from './types/contact'
+import { contactsData } from './data/contacts'
+import ContactForm from './components/ContactForm.vue'
+import Modal from './components/Modal.vue'
+
+const isMobile = ref(window.innerWidth < 768)
+const isDetailOpen = ref(false)
+const selectedContact = ref<Contact | null>(null)
+const isFormOpen = ref(false)
+function selectContact(contact: Contact) {
+  selectedContact.value = contact
+  if (isMobile.value) {
+    isDetailOpen.value = true
+  }
+}
+
 </script>
 
 <template>
   <div class="container">
     <div class="body-container">
-      <BaseHeader />
+      <BaseHeader @create="isFormOpen = true" />
       <ContactPanel />
+      <Modal v-if="isFormOpen" @close="isFormOpen = false">
+        <ContactForm />
+      </Modal>
       <BaseFooter />
     </div>
   </div>
+  <div class="modal-overlay" @click.self="$emit('close')">
+  <div class="modal-content">
+    <slot />
+  </div>
+</div>
+
 </template>
 
 <style scoped lang="scss">

@@ -6,24 +6,24 @@
           <button class="contact-detail__button">Edit</button>
           <button class="contact-detail__button">Delete</button>
         </div>
-        <h2>Yuan WU</h2>
-        <p>Email: yuanwu@gmail.com</p>
-        <p>Phone: 123-456-7890</p>
-        <p>Status: Active</p>
-        <p>Company: Yolodex</p>
-        <p>Position: CEO</p>
-        <p>Notes: Met at Web Summit.</p>
-        <p>Updated at 2025-05-01</p>
-        <p>Created at 2025-05-01</p>
+        <h2>{{ contact?.name }}</h2>
+        <p>Email: {{ contact?.email }}</p>
+        <p>Phone: {{ contact?.phone }}</p>
+        <p>Status: {{ contact?.status }}</p>
+        <p>Company: {{ contact?.company }}</p>
+        <p>Job Title: {{ contact?.jobTitle }}</p>
+        <p>Notes: {{ contact?.notes }}</p>
+        <p>Updated at {{ contact?.updatedAt }}</p>
+        <p>Created at {{ contact?.createdAt }}</p>
       </div>
       <div class="contact-detail__interactions">
         <h3>Interactions</h3>
-        <p>2025-05-01</p>
-        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quos.</p>
-        <p>2025-05-01</p>
-        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quos.</p>
-        <p>2025-05-01</p>
-        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quos.</p>
+        <p>2025-03-01</p>
+        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. </p>
+        <p>2025-04-11</p>
+        <p>Lorem ipsum dolor sit amet consectetur. </p>
+        <p>2025-05-08</p>
+        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit consectetur adipisicing elit. </p>
         <div class="interaction-add-btn-container">
           <button class="interaction-add-btn">
             <font-awesome-icon icon="fa-solid fa-plus" class="interaction-add-btn-icon" />  Interaction
@@ -35,10 +35,25 @@
 </template>
 
 <script setup lang="ts">
+import type { Contact } from '@/types/contact';
+
+defineProps<{
+  contact: Contact | null
+}>()
+
 </script>
 
 <style scoped lang="scss">
 .contact-detail {
+
+  width: 100%;
+  height: 100%;
+  background-color: $primary-yellow;
+  display: flex;
+  flex-direction: column;
+  padding: 1rem;
+
+  @media (min-width: 768px) {
   width: 50%;
   height: 100%;
   padding: 1.5rem 3rem;
@@ -47,6 +62,7 @@
   display: flex;
   flex-direction: column;
   overflow-y: auto;
+  }
 
   .contact-detail__info {
     margin-bottom: 2rem;
@@ -125,7 +141,6 @@
     color: $primary-yellow;
 
     &:hover {
-      background-color: darken($primary-green, 5%);
       transform: translateY(0.2rem);
     }
   }
@@ -135,7 +150,7 @@
     color: $primary-yellow;
 
     &:hover {
-      background-color: darken(#e46565, 10%);
+
       transform: translateY(0.2rem);
     }
   }
