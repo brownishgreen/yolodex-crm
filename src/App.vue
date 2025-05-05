@@ -2,6 +2,20 @@
 import BaseHeader from './components/BaseHeader.vue'
 import BaseFooter from './components/BaseFooter.vue'
 import ContactPanel from './components/ContactPanel.vue'
+import { ref } from 'vue'
+import type { Contact } from './types/contact'
+import { contactsData } from './data/contacts'
+
+const isMobile = ref(window.innerWidth < 768)
+const isDetailOpen = ref(false)
+const selectedContact = ref<Contact | null>(null)
+function selectContact(contact: Contact) {
+  selectedContact.value = contact
+  if (isMobile.value) {
+    isDetailOpen.value = true
+  }
+}
+
 </script>
 
 <template>

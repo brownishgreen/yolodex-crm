@@ -45,6 +45,15 @@ defineProps<{
 
 <style scoped lang="scss">
 .contact-detail {
+
+  width: 100%;
+  height: 100%;
+  background-color: $primary-yellow;
+  display: flex;
+  flex-direction: column;
+  padding: 1rem;
+
+  @media (min-width: 768px) {
   width: 50%;
   height: 100%;
   padding: 1.5rem 3rem;
@@ -53,6 +62,7 @@ defineProps<{
   display: flex;
   flex-direction: column;
   overflow-y: auto;
+  }
 
   .contact-detail__info {
     margin-bottom: 2rem;
@@ -131,7 +141,6 @@ defineProps<{
     color: $primary-yellow;
 
     &:hover {
-      background-color: darken($primary-green, 5%);
       transform: translateY(0.2rem);
     }
   }
@@ -141,7 +150,7 @@ defineProps<{
     color: $primary-yellow;
 
     &:hover {
-      background-color: darken(#e46565, 10%);
+
       transform: translateY(0.2rem);
     }
   }
