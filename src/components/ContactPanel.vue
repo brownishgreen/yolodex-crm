@@ -1,7 +1,13 @@
 <template>
   <div class="contact-panel">
-    <ContactList/>
-    <ContactDetail />
+    <ContactList
+    :contacts="contacts"
+    :selected="selectedContact"
+    @select="selectContact"
+    />
+    <ContactDetail
+    :contact="selectedContact"
+    />
   </div>
 </template>
 
@@ -14,6 +20,10 @@ import type { Contact } from '@/types/contact';
 import { contactsData } from '@/data/contacts';
 
 const contacts = ref<Contact[]>(contactsData);
+const selectedContact = ref<Contact | null>(contacts.value[0] || null);
+function selectContact(contact: Contact) {
+  selectedContact.value = contact;
+}
 
 </script>
 
