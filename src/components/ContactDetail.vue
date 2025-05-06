@@ -38,10 +38,15 @@
 
 <script setup lang="ts">
 import type { Contact } from '@/types/contact';
+import { watch } from 'vue';
 
-defineProps<{
+const props = defineProps<{
   contact: Contact | null
 }>()
+
+watch(() => props.contact, (newVal) => {
+  console.log('Contact changed:', newVal)
+})
 
 </script>
 

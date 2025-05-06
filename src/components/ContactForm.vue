@@ -59,18 +59,16 @@ const formDataSubmit = reactive<Omit<Contact, 'id' | 'createdAt' | 'updatedAt'>>
 
 
 function handleSubmit() {
-  const newContact = {
-    ...(props.contact ?? {
-      id: Date.now().toString(),
-      createdAt: new Date()
-    }),
-    ...formDataSubmit,
-    updatedAt: new Date()
-  };
+  const newContact: Contact = {
+    id: props.contact?.id ?? Date.now().toString(),
+    createdAt: props.contact?.createdAt ?? new Date(),
+    updatedAt: new Date(),
+    ...formDataSubmit
+  }
 
-  //emit the new contact to the parent component
-  emit('submit', newContact);
+  emit('submit', newContact)
 }
+
 
 const emit = defineEmits<{
   (e: 'submit', contact: Contact): void

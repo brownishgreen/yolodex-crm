@@ -13,11 +13,16 @@
     <ContactDetail
       v-if="!isMobile"
       :contact="selectedContact"
-      @edit="$emit('edit', $event)"
+      @edit="$emit('edit', selectedContact)"
+      :key="selectedContact?.id"
     />
     <!-- mobile mode: show detail in Modal -->
     <Modal v-if="isMobile && isDetailOpen" @close="isDetailOpen = false">
-      <ContactDetail :contact="selectedContact" />
+      <ContactDetail 
+      :contact="selectedContact"
+      @edit="$emit('edit', selectedContact)"
+      :key="selectedContact?.id"
+      />
     </Modal>
   </div>
 </template>
@@ -26,7 +31,7 @@
 import ContactList from './ContactList.vue';
 import ContactDetail from './ContactDetail.vue';
 import Modal from './Modal.vue';
-import { ref, onMounted } from 'vue';
+import { ref, onMounted, computed } from 'vue';
 //get contacts data and type
 import type { Contact } from '@/types/contact';
 import { contactsData } from '@/data/contacts';
@@ -37,7 +42,11 @@ const props = defineProps<{
 
 const isMobile = ref(false);
 const isDetailOpen = ref(false);
-const selectedContact = ref<Contact | null>(props.contacts[0] || null);
+const selectedId = ref<string | null>(props.contacts[0]?.id || null)
+const selectedContact = computed(() => 
+  props.contacts.find(c => c.id === selectedId.value) || null
+)
+
 
 function handleResize() {
   isMobile.value = window.innerWidth < 768;
@@ -49,9 +58,9 @@ onMounted(() => {
 });
 
 function selectContact(contact: Contact) {
-  selectedContact.value = contact;
+  selectedId.value = contact.id
   if (isMobile.value) {
-    isDetailOpen.value = true;
+    isDetailOpen.value = true
   }
 }
 

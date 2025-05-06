@@ -2,7 +2,7 @@
 import BaseHeader from './components/BaseHeader.vue'
 import BaseFooter from './components/BaseFooter.vue'
 import ContactPanel from './components/ContactPanel.vue'
-import { ref } from 'vue'
+import { ref, nextTick } from 'vue'
 import type { Contact } from './types/contact'
 import { contactsData } from './data/contacts'
 import ContactForm from './components/ContactForm.vue'
@@ -22,10 +22,23 @@ function selectContact(contact: Contact) {
   }
 }
 
-function handleAddContact(contact: Contact) {
-  contacts.value.push(contact)
+function handleContactSubmit(contact: Contact) {
+  const index = contacts.value.findIndex(c => c.id === contact.id)
+  if (index !== -1) {
+    //update the contact
+    contacts.value.splice(index, 1, contact)
+    selectedContact.value = { ...contact }
+  } else {
+    //add the new contact
+    contacts.value.push(contact)
+    selectedContact.value = contact
+  }
+
   isFormOpen.value = false
+  editingContact.value = null
 }
+
+
 
 function openEditForm(contact: Contact) {
   editingContact.value = contact
@@ -47,17 +60,11 @@ function openEditForm(contact: Contact) {
       <Modal v-if="isFormOpen" @close="isFormOpen = false">
         <ContactForm 
         :contact="editingContact"
-        @submit="handleAddContact" />
+        @submit="handleContactSubmit" />
       </Modal>
       <BaseFooter />
     </div>
   </div>
-  <div class="modal-overlay" @click.self="$emit('close')">
-  <div class="modal-content">
-    <slot />
-  </div>
-</div>
-
 </template>
 
 <style scoped lang="scss">
