@@ -3,7 +3,9 @@
     <div class="contact-detail__info">
       <div class="contact-detail__info-item">
         <div class="contact-detail__button-group">
-          <button class="contact-detail__button">Edit</button>
+          <button class="contact-detail__button"
+          @click="$emit('edit', contact)"
+          >Edit</button>
           <button class="contact-detail__button">Delete</button>
         </div>
         <h2>{{ contact?.name }}</h2>

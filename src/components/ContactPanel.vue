@@ -13,6 +13,7 @@
     <ContactDetail
       v-if="!isMobile"
       :contact="selectedContact"
+      @edit="$emit('edit', $event)"
     />
     <!-- mobile mode: show detail in Modal -->
     <Modal v-if="isMobile && isDetailOpen" @close="isDetailOpen = false">

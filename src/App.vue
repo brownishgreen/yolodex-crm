@@ -13,6 +13,8 @@ const isDetailOpen = ref(false)
 const selectedContact = ref<Contact | null>(null)
 const isFormOpen = ref(false)
 const contacts = ref<Contact[]>(contactsData)
+
+const editingContact = ref<Contact | null>(null)
 function selectContact(contact: Contact) {
   selectedContact.value = contact
   if (isMobile.value) {
@@ -25,16 +27,27 @@ function handleAddContact(contact: Contact) {
   isFormOpen.value = false
 }
 
+function openEditForm(contact: Contact) {
+  editingContact.value = contact
+  isFormOpen.value = true
+}
+
 </script>
 
 <template>
   <div class="container">
     <div class="body-container">
       <BaseHeader @create="isFormOpen = true" />
-      <ContactPanel :contacts="contacts" />
+      <ContactPanel 
+      :contacts="contacts"
+      :selected="selectedContact"
+      @edit="openEditForm"
+      />
       <!-- Modal for the form -->
       <Modal v-if="isFormOpen" @close="isFormOpen = false">
-        <ContactForm @submit="handleAddContact" />
+        <ContactForm 
+        :contact="editingContact"
+        @submit="handleAddContact" />
       </Modal>
       <BaseFooter />
     </div>

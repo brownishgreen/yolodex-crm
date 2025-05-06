@@ -33,7 +33,7 @@
           <option value="inactive">Inactive</option>
         </select>
       </div>
-      <button type="submit" class="submit-btn">Create</button>
+      <button type="submit" class="submit-btn">Submit</button>
     </form>
   </div>
 </template>
@@ -42,23 +42,30 @@
 import { reactive } from 'vue';
 import type { Contact } from '@/types/contact';
 
-//define a reactive contact object
+const props = defineProps<{
+  contact?: Contact | null
+}>()
+
 const formDataSubmit = reactive<Omit<Contact, 'id' | 'createdAt' | 'updatedAt'>>({
-  name: '',
-  email: '',
-  phone: '',
-  company: '',
-  jobTitle: '',
-  notes: '',
-  status: 'active',
+  name: props.contact?.name || '',
+  email: props.contact?.email || '',
+  phone: props.contact?.phone || '',
+  company: props.contact?.company || '',
+  jobTitle: props.contact?.jobTitle || '',
+  notes: props.contact?.notes || '',
+  status: props.contact?.status || 'active',
 });
+
+
 
 function handleSubmit() {
   const newContact = {
-    id: Date.now().toString(),
-    ...formDataSubmit, //format the contact object
-    createdAt: new Date(),
-    updatedAt: new Date(),
+    ...(props.contact ?? {
+      id: Date.now().toString(),
+      createdAt: new Date()
+    }),
+    ...formDataSubmit,
+    updatedAt: new Date()
   };
 
   //emit the new contact to the parent component
@@ -67,7 +74,7 @@ function handleSubmit() {
 
 const emit = defineEmits<{
   (e: 'submit', contact: Contact): void
-}>();
+}>()
 
 </script>
 
