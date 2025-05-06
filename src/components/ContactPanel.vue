@@ -14,6 +14,7 @@
       v-if="!isMobile"
       :contact="selectedContact"
       @edit="$emit('edit', selectedContact)"
+      @delete="$emit('delete', selectedContact)"
       :key="selectedContact?.id"
     />
     <!-- mobile mode: show detail in Modal -->
@@ -21,6 +22,7 @@
       <ContactDetail 
       :contact="selectedContact"
       @edit="$emit('edit', selectedContact)"
+      @delete="$emit('delete', selectedContact)"
       :key="selectedContact?.id"
       />
     </Modal>

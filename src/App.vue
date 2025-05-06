@@ -10,6 +10,7 @@ import Modal from './components/Modal.vue'
 
 const isMobile = ref(window.innerWidth < 768)
 const isDetailOpen = ref(false)
+const selectedId = ref<string | null>(null)
 const selectedContact = ref<Contact | null>(null)
 const isFormOpen = ref(false)
 const contacts = ref<Contact[]>(contactsData)
@@ -38,11 +39,18 @@ function handleContactSubmit(contact: Contact) {
   editingContact.value = null
 }
 
-
-
 function openEditForm(contact: Contact) {
   editingContact.value = contact
   isFormOpen.value = true
+}
+
+function handleDeleteContact(contact: Contact) {
+  contacts.value = contacts.value.filter(client => client.id !== contact.id)
+
+  if (selectedId.value === contact.id) {
+    selectedId.value = null
+    isDetailOpen.value = false
+  }
 }
 
 </script>
@@ -55,6 +63,7 @@ function openEditForm(contact: Contact) {
       :contacts="contacts"
       :selected="selectedContact"
       @edit="openEditForm"
+      @delete="handleDeleteContact"
       />
       <!-- Modal for the form -->
       <Modal v-if="isFormOpen" @close="isFormOpen = false">
