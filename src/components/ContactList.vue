@@ -3,7 +3,16 @@
     <aside class="contact-list__aside">
       <div class="contact-list__search">
         <input type="text" placeholder="Search contact..." class="contact-list__search-input" v-model="searchQuery"/>
+        <div class="sort-container">
+          <label for="sort">Sort by:</label>
+          <select id="sort" v-model="selectedSort">
+            <option value="name">Name</option>
+            <option value="status">Status</option>
+            <option value="createdAt">Created Time</option>
+          </select>
+</div>
       </div>
+      
       <div class="contact-list__items">
         <ul class="contact-items">
           <li
@@ -42,11 +51,24 @@ defineEmits<{
 
 //create a ref for the search query
 const searchQuery = ref('')
+const selectedSort = ref<'name' | 'createdAt' | 'status'>('name')
 const filteredContacts = computed(() =>
-  props.contacts.filter(contact =>
+  props.contacts
+  .filter(contact =>
     contact.name.toLowerCase().includes(searchQuery.value.toLowerCase())
   )
+  .sort((a, b) => {
+    if (selectedSort.value === 'name') {
+      return a.name.localeCompare(b.name)
+    } else if (selectedSort.value === 'createdAt') {
+      return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+    } else if (selectedSort.value === 'status') {
+      return a.status === 'active' ? -1 : 1
+    }
+    return 0
+  })
 )
+
 
 
 </script>
@@ -75,20 +97,10 @@ const filteredContacts = computed(() =>
     align-items: center;
     position: relative;
 
-    .search-icon {
-    position: absolute;
-    top: 50%;
-    left: 3.5rem;
-    transform: translateY(-50%);
-    color: $outline-color;
-    font-size: 1rem;
-  }
-
     .contact-list__search-input {
-      width: 100%;
-      max-width: 90%;
+      width: 50%;
+      max-width: 50%;
       padding: 0.6rem 1rem;
-      font-size: 1rem;
       border-radius: 1rem;
       box-shadow: 0 0 10px 0 rgba(47, 46, 46, 0.15);
       border: 3px solid $primary-yellow;
@@ -97,8 +109,29 @@ const filteredContacts = computed(() =>
     .contact-list__search-input:focus {
       outline: 1px solid $primary-green;
     }
-  }
 
+    .sort-container {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      margin-left: 1rem;
+      color: $primary-green;
+      
+
+      label {
+        font-weight: bold;
+        font-size: 0.9rem;
+      }
+      
+      select {
+        padding: 0.6rem 1rem;
+        border-radius: 1rem;
+        box-shadow: 0 0 10px 0 rgba(47, 46, 46, 0.15);
+        border: 3px solid $primary-yellow;
+
+      }
+    }
+  }
   .contact-list__items {
     max-height: calc(100vh - 150px);
     min-height: 0;
