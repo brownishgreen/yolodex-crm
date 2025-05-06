@@ -29,10 +29,8 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue';
 import type { Contact } from '@/types/contact';
-import { contactsData } from '@/data/contacts';
 
-//define this component will receive contacts and selected contact(2 props)
-defineProps<{
+const props = defineProps<{
   contacts: Contact[]
   selected: Contact | null
 }>()
@@ -45,7 +43,7 @@ defineEmits<{
 //create a ref for the search query
 const searchQuery = ref('')
 const filteredContacts = computed(() =>
-  contactsData.filter(contact =>
+  props.contacts.filter(contact =>
     contact.name.toLowerCase().includes(searchQuery.value.toLowerCase())
   )
 )

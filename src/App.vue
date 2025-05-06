@@ -2,7 +2,7 @@
 import BaseHeader from './components/BaseHeader.vue'
 import BaseFooter from './components/BaseFooter.vue'
 import ContactPanel from './components/ContactPanel.vue'
-import { ref } from 'vue'
+import { ref, nextTick } from 'vue'
 import type { Contact } from './types/contact'
 import { contactsData } from './data/contacts'
 import ContactForm from './components/ContactForm.vue'
@@ -10,9 +10,12 @@ import Modal from './components/Modal.vue'
 
 const isMobile = ref(window.innerWidth < 768)
 const isDetailOpen = ref(false)
+const selectedId = ref<string | null>(null)
 const selectedContact = ref<Contact | null>(null)
 const isFormOpen = ref(false)
 const contacts = ref<Contact[]>(contactsData)
+
+const editingContact = ref<Contact | null>(null)
 function selectContact(contact: Contact) {
   selectedContact.value = contact
   if (isMobile.value) {
@@ -20,9 +23,34 @@ function selectContact(contact: Contact) {
   }
 }
 
-function handleAddContact(contact: Contact) {
-  contacts.value.push(contact)
+function handleContactSubmit(contact: Contact) {
+  const index = contacts.value.findIndex(c => c.id === contact.id)
+  if (index !== -1) {
+    //update the contact
+    contacts.value.splice(index, 1, contact)
+    selectedContact.value = { ...contact }
+  } else {
+    //add the new contact
+    contacts.value.push(contact)
+    selectedContact.value = contact
+  }
+
   isFormOpen.value = false
+  editingContact.value = null
+}
+
+function openEditForm(contact: Contact) {
+  editingContact.value = contact
+  isFormOpen.value = true
+}
+
+function handleDeleteContact(contact: Contact) {
+  contacts.value = contacts.value.filter(client => client.id !== contact.id)
+
+  if (selectedId.value === contact.id) {
+    selectedId.value = null
+    isDetailOpen.value = false
+  }
 }
 
 </script>
@@ -31,20 +59,21 @@ function handleAddContact(contact: Contact) {
   <div class="container">
     <div class="body-container">
       <BaseHeader @create="isFormOpen = true" />
-      <ContactPanel :contacts="contacts" />
+      <ContactPanel 
+      :contacts="contacts"
+      :selected="selectedContact"
+      @edit="openEditForm"
+      @delete="handleDeleteContact"
+      />
       <!-- Modal for the form -->
       <Modal v-if="isFormOpen" @close="isFormOpen = false">
-        <ContactForm @submit="handleAddContact" />
+        <ContactForm 
+        :contact="editingContact"
+        @submit="handleContactSubmit" />
       </Modal>
       <BaseFooter />
     </div>
   </div>
-  <div class="modal-overlay" @click.self="$emit('close')">
-  <div class="modal-content">
-    <slot />
-  </div>
-</div>
-
 </template>
 
 <style scoped lang="scss">

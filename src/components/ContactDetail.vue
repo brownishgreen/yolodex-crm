@@ -3,8 +3,13 @@
     <div class="contact-detail__info">
       <div class="contact-detail__info-item">
         <div class="contact-detail__button-group">
-          <button class="contact-detail__button">Edit</button>
-          <button class="contact-detail__button">Delete</button>
+          <button 
+          class="contact-detail__button"
+          @click="$emit('edit', contact)"
+          >Edit</button>
+          <button 
+          class="contact-detail__button"
+          @click="$emit('delete', contact)">Delete</button>
         </div>
         <h2>{{ contact?.name }}</h2>
         <p>Email: {{ contact?.email }}</p>
@@ -36,10 +41,15 @@
 
 <script setup lang="ts">
 import type { Contact } from '@/types/contact';
+import { watch } from 'vue';
 
-defineProps<{
+const props = defineProps<{
   contact: Contact | null
 }>()
+
+watch(() => props.contact, (newVal) => {
+  console.log('Contact changed:', newVal)
+})
 
 </script>
 
