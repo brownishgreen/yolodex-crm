@@ -1,5 +1,5 @@
 <template>
-  <div class="contact-detail">
+  <div v-if="contact" class="contact-detail">
     <div class="contact-detail__info">
       <div class="contact-detail__info-item">
         <div class="contact-detail__button-group">
@@ -11,26 +11,33 @@
           class="contact-detail__button"
           @click="$emit('delete', contact)">Delete</button>
         </div>
-        <h2>{{ contact?.name }}</h2>
-        <p>Email: {{ contact?.email }}</p>
-        <p>Phone: {{ contact?.phone }}</p>
-        <p>Status: {{ contact?.status }}</p>
-        <p>Company: {{ contact?.company }}</p>
-        <p>Job Title: {{ contact?.jobTitle }}</p>
-        <p>Notes: {{ contact?.notes }}</p>
-        <p>Updated at {{ contact?.updatedAt }}</p>
-        <p>Created at {{ contact?.createdAt }}</p>
+        <h2>{{ contact.name }}</h2>
+        <p><span class="contact-detail__info-item-label">Email:</span> {{ contact.email }}</p>
+        <p><span class="contact-detail__info-item-label">Phone:</span> {{ contact.phone }}</p>
+        <p><span class="contact-detail__info-item-label">Status:</span> {{ contact.status }}</p>
+        <p><span class="contact-detail__info-item-label">Company:</span> {{ contact.company }}</p>
+        <p><span class="contact-detail__info-item-label">Job Title:</span> {{ contact.jobTitle }}</p>
+        <p><span class="contact-detail__info-item-label">Notes:</span> {{ contact.notes }}</p>
+        <p><span class="contact-detail__info-item-label">Updated at:</span> {{ contact.updatedAt.toLocaleDateString() }}</p>
+        <p><span class="contact-detail__info-item-label">Created at:</span> {{ contact.createdAt.toLocaleDateString() }}</p>
       </div>
       <div class="contact-detail__interactions">
         <h3>Interactions</h3>
-        <p>2025-03-01</p>
-        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. </p>
-        <p>2025-04-11</p>
-        <p>Lorem ipsum dolor sit amet consectetur. </p>
-        <p>2025-05-08</p>
-        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit consectetur adipisicing elit. </p>
+        <ul class="timeline">
+          <li v-for="i in contact.interactions" :key="i.date.getTime()">
+            <div class="timeline-dot" />
+            <div class="timeline-content">
+              <p class="timeline-date">{{ i.date.toLocaleDateString() }}</p>
+              <p class="timeline-type">{{ i.type }}</p>
+              <p class="timeline-note">{{ i.note }}</p>
+            </div>
+          </li>
+        </ul>
         <div class="interaction-add-btn-container">
-          <button class="interaction-add-btn">
+          <button 
+          class="interaction-add-btn"
+          @click="$emit('open-add-interaction', contact.id)"
+          >
             <font-awesome-icon icon="fa-solid fa-plus" class="interaction-add-btn-icon" />  Interaction
           </button>
         </div>
@@ -40,16 +47,16 @@
 </template>
 
 <script setup lang="ts">
-import type { Contact } from '@/types/contact';
-import { watch } from 'vue';
+import type { Contact, Interaction } from '@/types/contact';
 
-const props = defineProps<{
-  contact: Contact | null
+defineProps<{ contact: Contact | null }>()
+
+defineEmits<{
+  (e: 'edit', contact: Contact): void
+  (e: 'delete', contact: Contact): void
+  (e: 'open-add-interaction', contactId: string): void
+  (e: 'add-interaction', payload: { contactId: string; interaction: Interaction }): void
 }>()
-
-watch(() => props.contact, (newVal) => {
-  console.log('Contact changed:', newVal)
-})
 
 </script>
 
@@ -76,6 +83,12 @@ watch(() => props.contact, (newVal) => {
 
   .contact-detail__info {
     margin-bottom: 2rem;
+
+    .contact-detail__info-item-label {
+      font-weight: bold;
+      color: rgb(0, 0, 0);
+      margin-right: 1rem;
+    }
 
     h2 {
       font-size: 1.8rem;
@@ -191,6 +204,53 @@ watch(() => props.contact, (newVal) => {
     }
   }
 }
+
+//timeline
+.timeline {
+  position: relative;
+  padding-left: 1.5rem;
+  list-style: none;
+  border-left: 3px solid $primary-green;
+
+  li {
+    position: relative;
+    margin-bottom: 1.5rem;
+  }
+
+  .timeline-dot {
+    position: absolute;
+    top: 2.3rem;
+    left: -1.95rem;
+    width: 12px;
+    height: 12px;
+    background-color: $primary-green;
+    border-radius: 50%;
+  }
+
+  .timeline-content {
+    background: #fff;
+    padding: 0.6rem 1rem;
+    border-radius: 8px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    font-size: 0.95rem;
+
+    .timeline-date {
+      font-size: 0.8rem;
+      font-weight: bold;
+      color: $primary-green;
+    }
+
+    .timeline-type {
+      font-size: 0.9rem;
+      margin: 0.3rem 0;
+    }
+
+    .timeline-note {
+      color: #444;
+    }
+  }
+}
+
 
 
 </style>

@@ -20,11 +20,8 @@ header {
   background-color: $primary-green;
   padding: 1rem;
   width: 80vw;
-  border-radius: 25px 25px 0 0;
-  outline: 4px solid $outline-color;
   img {
     width: 150px;
-
   }
   .nav-item {
     color: $primary-yellow;
@@ -34,15 +31,15 @@ header {
     cursor: pointer;
   }
   .create-contact-btn {
-  background-color: $primary-green;
-  color: $primary-yellow;
+  background-color: $primary-yellow;
+  color: $primary-green;
   border: none;
   border-radius: 15px;
   padding: 0.5rem 1rem;
   margin-right: 1rem;
   font-size: 1.2rem;
   font-weight: 500;
-  box-shadow: 0 0 20px 0 rgba(51, 50, 50, 0.32);
+  box-shadow: 0 0 25px 0 rgba(31, 30, 30, 0.32);
   cursor: pointer;
   transition: all 0.2s ease; // smooth hover + click 效果
 }

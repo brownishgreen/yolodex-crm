@@ -1,7 +1,7 @@
 <template>
   <div class="contact-panel">
     <!-- <div class="floating-form">
-      <ContactForm />
+      <InteractionForm />
     </div> -->
     <ContactList
       :contacts="contacts"
@@ -16,6 +16,7 @@
       @edit="$emit('edit', selectedContact)"
       @delete="$emit('delete', selectedContact)"
       :key="selectedContact?.id"
+      @open-add-interaction="$emit('open-add-interaction', selectedContact?.id)"
     />
     <!-- mobile mode: show detail in Modal -->
     <Modal v-if="isMobile && isDetailOpen" @close="isDetailOpen = false">
@@ -24,6 +25,7 @@
       @edit="$emit('edit', selectedContact)"
       @delete="$emit('delete', selectedContact)"
       :key="selectedContact?.id"
+      @open-add-interaction="$emit('open-add-interaction', selectedContact?.id)"
       />
     </Modal>
   </div>
@@ -67,6 +69,7 @@ function selectContact(contact: Contact) {
 }
 
 
+
 </script>
 
 <style scoped lang="scss">
@@ -84,7 +87,6 @@ function selectContact(contact: Contact) {
 @media (max-width: 768px) {
     .contact-panel {
       flex-direction: column;
-      height: 100vh;
     }
 }
 

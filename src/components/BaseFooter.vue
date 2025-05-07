@@ -15,9 +15,10 @@ footer {
   align-items: center;
   justify-content: center;
   flex-direction: column;
-  width: 80vw;
-  border-radius: 0 0 25px 25px;
-  outline: 4px solid $outline-color;
+  width: 100%;
+  outline: none;
+  border-radius: 0;
+  flex-shrink: 0;
   p {
     font-size: 1rem;
     font-weight: 300;
@@ -26,6 +27,7 @@ footer {
 
 @media (max-width: 768px) {
   footer {
+    border-radius:0 0 25px 25px;
     p {
       font-size: 0.7rem;
     }
