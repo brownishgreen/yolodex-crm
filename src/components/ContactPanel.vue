@@ -16,7 +16,7 @@
       @edit="$emit('edit', selectedContact)"
       @delete="$emit('delete', selectedContact)"
       :key="selectedContact?.id"
-      @open-add-interaction="$emit('open-add-interaction')"
+      @open-add-interaction="$emit('open-add-interaction', selectedContact?.id)"
     />
     <!-- mobile mode: show detail in Modal -->
     <Modal v-if="isMobile && isDetailOpen" @close="isDetailOpen = false">
@@ -25,8 +25,7 @@
       @edit="$emit('edit', selectedContact)"
       @delete="$emit('delete', selectedContact)"
       :key="selectedContact?.id"
-      @open-add-interaction="$emit('open-add-interaction')"
-      @add-interaction="interaction => $emit('add-interaction', interaction)"
+      @open-add-interaction="$emit('open-add-interaction', selectedContact?.id)"
       />
     </Modal>
   </div>
@@ -88,7 +87,6 @@ function selectContact(contact: Contact) {
 @media (max-width: 768px) {
     .contact-panel {
       flex-direction: column;
-      height: 100vh;
     }
 }
 

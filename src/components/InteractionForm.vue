@@ -52,10 +52,7 @@ function handleSubmit() {
     date: new Date(form.date)
   }
 
-  emit('add', {
-    contactId: props.contactId,
-    interaction
-  })
+  emit('add', { contactId: props.contactId, interaction })
 
   // reset form
   form.type = '📞 Call'

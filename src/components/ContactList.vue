@@ -4,7 +4,12 @@
       <div class="contact-list__search">
         <input type="text" placeholder="Search contact..." class="contact-list__search-input" v-model="searchQuery"/>
         <div class="sort-container">
-          <label for="sort">Sort by:</label>
+          <label for="sort">
+            <p class="sort-label">Sort by:</p>
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6 sort-icon">
+  <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 6h9.75M10.5 6a1.5 1.5 0 1 1-3 0m3 0a1.5 1.5 0 1 0-3 0M3.75 6H7.5m3 12h9.75m-9.75 0a1.5 1.5 0 0 1-3 0m3 0a1.5 1.5 0 0 0-3 0m-3.75 0H7.5m9-6h3.75m-3.75 0a1.5 1.5 0 0 1-3 0m3 0a1.5 1.5 0 0 0-3 0m-9.75 0h9.75" />
+</svg>
+          </label>
           <select id="sort" v-model="selectedSort">
             <option value="name">Name</option>
             <option value="status">Status</option>
@@ -108,20 +113,26 @@ function exportContactsToCSV() {
 }
 
 .contact-list {
-  width: 100%;
-  height: 100%;
+  width: 50%;
   display: flex;
   flex-direction: column;
   border-right: 2px solid #ccc;
-  @media (min-width: 768px) {
-      width: 50%;
-    }
+
+  @media (max-width: 768px) {
+    width: 100%;
+  }
+
   .contact-list__search {
     padding: 1rem;
     display: flex;
     justify-content: center;
     align-items: center;
     position: relative;
+
+    @media (max-width: 1024px) {
+      flex-direction: column;
+    }
+
 
     .contact-list__search-input {
       width: 40%;
@@ -130,6 +141,11 @@ function exportContactsToCSV() {
       border-radius: 1rem;
       box-shadow: 0 0 10px 0 rgba(47, 46, 46, 0.15);
       border: 3px solid $primary-yellow;
+
+      @media (max-width: 1024px) {
+        width: 100%;
+        max-width: 80%;
+      }
     }
 
     .contact-list__search-input:focus {
@@ -142,11 +158,41 @@ function exportContactsToCSV() {
       gap: 0.5rem;
       margin-left: 1rem;
       color: $primary-green;
+
+      .sort-label {
+        font-size: 1rem;
+        font-weight: 500;
+        @media (max-width: 1453px) {
+          display: none;
+        }
+      }
+
+      .sort-icon {
+        width: 1.5rem;
+        height: 1.5rem;
+        color: $primary-green;
+        margin: 0.8rem -0.5rem 0 0.2rem;
+        display: none;
+
+        @media (max-width: 768px) {
+          display: block;
+        }
+      }
+
+      @media (max-width: 768px) {
+        justify-content: space-between;
+        width: 80%;
+        margin-left: 0;
+      }
       
 
       label {
         font-weight: bold;
         font-size: 0.9rem;
+
+        // @media (max-width: 768px) {
+        //   display: none;
+        // }
       }
       
       select {
@@ -155,6 +201,9 @@ function exportContactsToCSV() {
         box-shadow: 0 0 10px 0 rgba(47, 46, 46, 0.15);
         border: 3px solid $primary-yellow;
 
+        @media (max-width: 768px) {
+          margin-top: 0.5rem;
+        }
       }
     }
 
@@ -169,6 +218,12 @@ function exportContactsToCSV() {
       box-shadow: 0 0 10px 0 rgba(47, 46, 46, 0.15);
       cursor: pointer;
       transition: background-color 0.6s ease, transform 0.6s ease;
+
+      @media (max-width: 768px) {
+        margin-left: -0.5rem;
+        margin-top: 0.5rem;
+        font-size: 0.9rem;
+      }
 
       svg {
         box-shadow: 0 0 10px 0 rgba(47, 46, 46, 0.15);
@@ -249,6 +304,5 @@ function exportContactsToCSV() {
 .contact-list__items::-webkit-scrollbar-track {
   background: transparent;
 }
-
 
 </style>

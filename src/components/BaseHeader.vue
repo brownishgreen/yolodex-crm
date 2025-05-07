@@ -20,11 +20,8 @@ header {
   background-color: $primary-green;
   padding: 1rem;
   width: 80vw;
-  border-radius: 25px 25px 0 0;
-  outline: 4px solid $outline-color;
   img {
     width: 150px;
-
   }
   .nav-item {
     color: $primary-yellow;

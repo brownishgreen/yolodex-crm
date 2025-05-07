@@ -1,5 +1,5 @@
 <template>
-  <div class="contact-detail">
+  <div v-if="contact" class="contact-detail">
     <div class="contact-detail__info">
       <div class="contact-detail__info-item">
         <div class="contact-detail__button-group">
@@ -11,32 +11,33 @@
           class="contact-detail__button"
           @click="$emit('delete', contact)">Delete</button>
         </div>
-        <h2>{{ localContact.name }}</h2>
-        <p>Email: {{ localContact.email }}</p>
-        <p>Phone: {{ localContact.phone }}</p>
-        <p>Status: {{ localContact.status }}</p>
-        <p>Company: {{ localContact.company }}</p>
-        <p>Job Title: {{ localContact.jobTitle }}</p>
-        <p>Notes: {{ localContact.notes }}</p>
-        <p>Updated at {{ localContact.updatedAt }}</p>
-        <p>Created at {{ localContact.createdAt }}</p>
+        <h2>{{ contact.name }}</h2>
+        <p><span class="contact-detail__info-item-label">Email:</span> {{ contact.email }}</p>
+        <p><span class="contact-detail__info-item-label">Phone:</span> {{ contact.phone }}</p>
+        <p><span class="contact-detail__info-item-label">Status:</span> {{ contact.status }}</p>
+        <p><span class="contact-detail__info-item-label">Company:</span> {{ contact.company }}</p>
+        <p><span class="contact-detail__info-item-label">Job Title:</span> {{ contact.jobTitle }}</p>
+        <p><span class="contact-detail__info-item-label">Notes:</span> {{ contact.notes }}</p>
+        <p><span class="contact-detail__info-item-label">Updated at:</span> {{ contact.updatedAt.toLocaleDateString() }}</p>
+        <p><span class="contact-detail__info-item-label">Created at:</span> {{ contact.createdAt.toLocaleDateString() }}</p>
       </div>
       <div class="contact-detail__interactions">
         <h3>Interactions</h3>
         <ul class="timeline">
-          <li v-for="interaction in localContact.interactions" :key="interaction.date.toISOString()">
+          <li v-for="i in contact.interactions" :key="i.date.getTime()">
             <div class="timeline-dot" />
             <div class="timeline-content">
-              <p class="timeline-date">{{ interaction.date.toLocaleDateString() }}</p>
-              <p class="timeline-type">{{ interaction.type }}</p>
-              <p class="timeline-note">{{ interaction.note }}</p>
+              <p class="timeline-date">{{ i.date.toLocaleDateString() }}</p>
+              <p class="timeline-type">{{ i.type }}</p>
+              <p class="timeline-note">{{ i.note }}</p>
             </div>
           </li>
         </ul>
         <div class="interaction-add-btn-container">
           <button 
           class="interaction-add-btn"
-          @click="$emit('open-add-interaction')">
+          @click="$emit('open-add-interaction', contact.id)"
+          >
             <font-awesome-icon icon="fa-solid fa-plus" class="interaction-add-btn-icon" />  Interaction
           </button>
         </div>
@@ -47,49 +48,15 @@
 
 <script setup lang="ts">
 import type { Contact, Interaction } from '@/types/contact';
-import { watch, reactive } from 'vue';
 
-const props = defineProps<{
-  contact: Contact | null
-}>()
+defineProps<{ contact: Contact | null }>()
 
-const emit = defineEmits<{
+defineEmits<{
   (e: 'edit', contact: Contact): void
   (e: 'delete', contact: Contact): void
-  (e: 'open-add-interaction'): void
-  (e: 'add-interaction', payload: {
-    contactId: string;
-    interaction: Interaction
-  }): void
+  (e: 'open-add-interaction', contactId: string): void
+  (e: 'add-interaction', payload: { contactId: string; interaction: Interaction }): void
 }>()
-
-
-const localContact = reactive<Contact>(
-  props.contact
-    ? { ...props.contact }
-    : {
-        id: '',
-        name: '',
-        email: '',
-        phone: '',
-        company: '',
-        jobTitle: '',
-        status: 'active',
-        createdAt: new Date(),
-        updatedAt: new Date(),
-        interactions: []
-      }
-)
-
-
-// if props.contact changes, update localContact
-watch(() => props.contact, (newContact) => {
-  if (newContact) {
-    Object.assign(localContact, newContact)
-  }
-}, {
-  immediate: true
-})
 
 </script>
 
@@ -116,6 +83,12 @@ watch(() => props.contact, (newContact) => {
 
   .contact-detail__info {
     margin-bottom: 2rem;
+
+    .contact-detail__info-item-label {
+      font-weight: bold;
+      color: rgb(0, 0, 0);
+      margin-right: 1rem;
+    }
 
     h2 {
       font-size: 1.8rem;
