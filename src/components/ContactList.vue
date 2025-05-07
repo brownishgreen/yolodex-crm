@@ -10,7 +10,10 @@
             <option value="status">Status</option>
             <option value="createdAt">Created Time</option>
           </select>
-</div>
+          <button @click="exportContactsToCSV" class="export-button">
+            <font-awesome-icon :icon="['fas', 'file-csv']" size="xl"/>
+          </button>
+        </div>
       </div>
       
       <div class="contact-list__items">
@@ -69,8 +72,31 @@ const filteredContacts = computed(() =>
   })
 )
 
+function exportContactsToCSV() {
+  const headers = ['Name', 'Email', 'Phone', 'Status', 'Company', 'Job Title', 'Notes', 'Created At', 'Updated At']
+  const rows = filteredContacts.value.map(contact => [
+    contact.name,
+    contact.email,
+    contact.phone,
+    contact.status,
+    contact.company,
+    contact.jobTitle,
+    contact.notes,
+    contact.createdAt.toISOString(),
+    contact.updatedAt.toISOString()
+  ])
 
+  const csvContent = [headers, ...rows].map(row => row.join(',')).join('\n')
+  const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' })
+  const url = URL.createObjectURL(blob)
 
+  const link = document.createElement('a')
+  link.href = url
+  link.setAttribute('download', 'contacts.csv')
+  document.body.appendChild(link)
+  link.click()
+  document.body.removeChild(link)
+}
 </script>
 
 <style scoped lang="scss">
@@ -98,8 +124,8 @@ const filteredContacts = computed(() =>
     position: relative;
 
     .contact-list__search-input {
-      width: 50%;
-      max-width: 50%;
+      width: 40%;
+      max-width: 40%;
       padding: 0.6rem 1rem;
       border-radius: 1rem;
       box-shadow: 0 0 10px 0 rgba(47, 46, 46, 0.15);
@@ -129,6 +155,28 @@ const filteredContacts = computed(() =>
         box-shadow: 0 0 10px 0 rgba(47, 46, 46, 0.15);
         border: 3px solid $primary-yellow;
 
+      }
+    }
+
+    .export-button {
+      background-color: $primary-green;
+      color: $primary-yellow;
+      border: 3px solid #ded6bd;
+      padding: 0.6rem 1rem;
+      margin-left: 1rem;
+      border-radius: 1rem;
+      font-size: 1.1rem;
+      box-shadow: 0 0 10px 0 rgba(47, 46, 46, 0.15);
+      cursor: pointer;
+      transition: background-color 0.6s ease, transform 0.6s ease;
+
+      svg {
+        box-shadow: 0 0 10px 0 rgba(47, 46, 46, 0.15);
+      }
+
+      &:hover {
+        transform: scale(1.05);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
       }
     }
   }
