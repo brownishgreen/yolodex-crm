@@ -11,26 +11,32 @@
           class="contact-detail__button"
           @click="$emit('delete', contact)">Delete</button>
         </div>
-        <h2>{{ contact?.name }}</h2>
-        <p>Email: {{ contact?.email }}</p>
-        <p>Phone: {{ contact?.phone }}</p>
-        <p>Status: {{ contact?.status }}</p>
-        <p>Company: {{ contact?.company }}</p>
-        <p>Job Title: {{ contact?.jobTitle }}</p>
-        <p>Notes: {{ contact?.notes }}</p>
-        <p>Updated at {{ contact?.updatedAt }}</p>
-        <p>Created at {{ contact?.createdAt }}</p>
+        <h2>{{ localContact.name }}</h2>
+        <p>Email: {{ localContact.email }}</p>
+        <p>Phone: {{ localContact.phone }}</p>
+        <p>Status: {{ localContact.status }}</p>
+        <p>Company: {{ localContact.company }}</p>
+        <p>Job Title: {{ localContact.jobTitle }}</p>
+        <p>Notes: {{ localContact.notes }}</p>
+        <p>Updated at {{ localContact.updatedAt }}</p>
+        <p>Created at {{ localContact.createdAt }}</p>
       </div>
       <div class="contact-detail__interactions">
         <h3>Interactions</h3>
-        <p>2025-03-01</p>
-        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. </p>
-        <p>2025-04-11</p>
-        <p>Lorem ipsum dolor sit amet consectetur. </p>
-        <p>2025-05-08</p>
-        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit consectetur adipisicing elit. </p>
+        <ul class="timeline">
+          <li v-for="interaction in localContact.interactions" :key="interaction.date.toISOString()">
+            <div class="timeline-dot" />
+            <div class="timeline-content">
+              <p class="timeline-date">{{ interaction.date.toLocaleDateString() }}</p>
+              <p class="timeline-type">{{ interaction.type }}</p>
+              <p class="timeline-note">{{ interaction.note }}</p>
+            </div>
+          </li>
+        </ul>
         <div class="interaction-add-btn-container">
-          <button class="interaction-add-btn">
+          <button 
+          class="interaction-add-btn"
+          @click="$emit('open-add-interaction')">
             <font-awesome-icon icon="fa-solid fa-plus" class="interaction-add-btn-icon" />  Interaction
           </button>
         </div>
@@ -40,15 +46,49 @@
 </template>
 
 <script setup lang="ts">
-import type { Contact } from '@/types/contact';
-import { watch } from 'vue';
+import type { Contact, Interaction } from '@/types/contact';
+import { watch, reactive } from 'vue';
 
 const props = defineProps<{
   contact: Contact | null
 }>()
 
-watch(() => props.contact, (newVal) => {
-  console.log('Contact changed:', newVal)
+const emit = defineEmits<{
+  (e: 'edit', contact: Contact): void
+  (e: 'delete', contact: Contact): void
+  (e: 'open-add-interaction'): void
+  (e: 'add-interaction', payload: {
+    contactId: string;
+    interaction: Interaction
+  }): void
+}>()
+
+
+const localContact = reactive<Contact>(
+  props.contact
+    ? { ...props.contact }
+    : {
+        id: '',
+        name: '',
+        email: '',
+        phone: '',
+        company: '',
+        jobTitle: '',
+        status: 'active',
+        createdAt: new Date(),
+        updatedAt: new Date(),
+        interactions: []
+      }
+)
+
+
+// if props.contact changes, update localContact
+watch(() => props.contact, (newContact) => {
+  if (newContact) {
+    Object.assign(localContact, newContact)
+  }
+}, {
+  immediate: true
 })
 
 </script>
@@ -191,6 +231,53 @@ watch(() => props.contact, (newVal) => {
     }
   }
 }
+
+//timeline
+.timeline {
+  position: relative;
+  padding-left: 1.5rem;
+  list-style: none;
+  border-left: 3px solid $primary-green;
+
+  li {
+    position: relative;
+    margin-bottom: 1.5rem;
+  }
+
+  .timeline-dot {
+    position: absolute;
+    top: 2.3rem;
+    left: -1.95rem;
+    width: 12px;
+    height: 12px;
+    background-color: $primary-green;
+    border-radius: 50%;
+  }
+
+  .timeline-content {
+    background: #fff;
+    padding: 0.6rem 1rem;
+    border-radius: 8px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    font-size: 0.95rem;
+
+    .timeline-date {
+      font-size: 0.8rem;
+      font-weight: bold;
+      color: $primary-green;
+    }
+
+    .timeline-type {
+      font-size: 0.9rem;
+      margin: 0.3rem 0;
+    }
+
+    .timeline-note {
+      color: #444;
+    }
+  }
+}
+
 
 
 </style>

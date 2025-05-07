@@ -1,7 +1,7 @@
 <template>
   <div class="contact-panel">
     <!-- <div class="floating-form">
-      <ContactForm />
+      <InteractionForm />
     </div> -->
     <ContactList
       :contacts="contacts"
@@ -16,6 +16,7 @@
       @edit="$emit('edit', selectedContact)"
       @delete="$emit('delete', selectedContact)"
       :key="selectedContact?.id"
+      @open-add-interaction="$emit('open-add-interaction')"
     />
     <!-- mobile mode: show detail in Modal -->
     <Modal v-if="isMobile && isDetailOpen" @close="isDetailOpen = false">
@@ -24,6 +25,8 @@
       @edit="$emit('edit', selectedContact)"
       @delete="$emit('delete', selectedContact)"
       :key="selectedContact?.id"
+      @open-add-interaction="$emit('open-add-interaction')"
+      @add-interaction="interaction => $emit('add-interaction', interaction)"
       />
     </Modal>
   </div>
@@ -65,6 +68,7 @@ function selectContact(contact: Contact) {
     isDetailOpen.value = true
   }
 }
+
 
 
 </script>

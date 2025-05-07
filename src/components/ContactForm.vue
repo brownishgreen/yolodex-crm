@@ -54,6 +54,7 @@ const formDataSubmit = reactive<Omit<Contact, 'id' | 'createdAt' | 'updatedAt'>>
   jobTitle: props.contact?.jobTitle || '',
   notes: props.contact?.notes || '',
   status: props.contact?.status || 'active',
+  interactions: props.contact?.interactions || [],
 });
 
 

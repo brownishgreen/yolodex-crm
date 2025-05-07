@@ -9,4 +9,11 @@ export interface Contact {
   notes?: string;
   createdAt: Date;
   updatedAt: Date;
+  interactions: Interaction[];
+}
+
+export interface Interaction {
+  date: Date;
+  type: '📧 Email' | '📅 Meeting' | '📞 Call' | '📝 Note' | '🍱 Lunch';
+  note: string;
 }
