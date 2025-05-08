@@ -30,3 +30,9 @@ dist
 .env
 .DS_Store
 *.log
+
+# TypeScript accidental emit
+**/*.vue.js
+**/*.ts.js
+**/*.d.ts
+/.tsbuild
