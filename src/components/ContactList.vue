@@ -189,10 +189,6 @@ function exportContactsToCSV() {
       label {
         font-weight: bold;
         font-size: 0.9rem;
-
-        // @media (max-width: 768px) {
-        //   display: none;
-        // }
       }
       
       select {
@@ -222,7 +218,8 @@ function exportContactsToCSV() {
       @media (max-width: 768px) {
         margin-left: -0.5rem;
         margin-top: 0.5rem;
-        font-size: 0.9rem;
+        font-size: 0.8rem;
+        padding: 0.5rem 0.5rem;
       }
 
       svg {
@@ -257,6 +254,11 @@ function exportContactsToCSV() {
       color: $primary-green;
       cursor: pointer;
       transition: transform 0.5s ease, box-shadow 0.5s ease;
+
+      @media (max-width: 768px) {
+        font-size: 0.8rem;
+        padding: 0.5rem 0.5rem;
+      }
 
       &:hover {
           background-color: rgba(0, 0, 0, 0.05);

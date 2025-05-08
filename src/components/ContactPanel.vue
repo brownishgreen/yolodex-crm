@@ -82,6 +82,10 @@ function selectContact(contact: Contact) {
   flex-direction: row;
   justify-content: space-between;
   outline: 4px solid $outline-color;
+
+  @media (max-width: 768px) {
+    height: 450px;
+  }
 }
 
 @media (max-width: 768px) {

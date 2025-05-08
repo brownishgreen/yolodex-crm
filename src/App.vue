@@ -143,7 +143,7 @@ function handleOpenAddInteraction(id: string) {
   display: flex;
   align-items: center;
   justify-content: center;
-  background-image: url('https://images.unsplash.com/photo-1745069357747-5ed05c35b1ab?q=80&w=2400&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D');
+  background-image: url('https://images.unsplash.com/photo-1743444374283-06501bf51c11?q=80&w=1888&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D');
 
   .card {
     display: flex;
@@ -158,7 +158,7 @@ function handleOpenAddInteraction(id: string) {
 
 @media (max-width: 768px) {
   .container {
-    width: 100%;
+    width: 100;
     height: 100%;
     border-radius: 0;
     outline: none;

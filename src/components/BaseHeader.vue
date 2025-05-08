@@ -20,6 +20,7 @@ header {
   background-color: $primary-green;
   padding: 1rem;
   width: 80vw;
+  height: 100%;
   img {
     width: 150px;
   }
