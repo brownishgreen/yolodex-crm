@@ -34,6 +34,7 @@ const filteredContacts = computed(() =>
 
 function exportContactsToCSV() {
   const headers = ['Name', 'Email', 'Phone', 'Status', 'Company', 'Job Title', 'Notes', 'Created At', 'Updated At']
+
   const rows = filteredContacts.value.map(contact => [
     contact.name,
     contact.email,
@@ -46,8 +47,12 @@ function exportContactsToCSV() {
     contact.updatedAt.toISOString()
   ])
 
-  const csvContent = [headers, ...rows].map(row => row.join(',')).join('\n')
+  const csvContent = [headers, ...rows]
+    .map(row => row.join(','))
+    .join('\n')
+
   const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' })
+
   const url = URL.createObjectURL(blob)
 
   const link = document.createElement('a')

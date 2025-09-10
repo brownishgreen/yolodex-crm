@@ -2,10 +2,9 @@
 import ContactList from './ContactList.vue';
 import ContactDetail from './ContactDetail.vue';
 import Modal from './Modal.vue';
-import { ref, onMounted, computed } from 'vue';
+
 //get contacts data and type
 import type { Contact } from '@/types/contact';
-import { contactsData } from '@/data/contacts';
 
 const props = defineProps<{
   contacts: Contact[]
@@ -67,7 +66,7 @@ const emit = defineEmits<{
   justify-content: space-between;
   outline: 4px solid $outline-color;
 
-  @media (max-width: 768px) {
+@media (max-width: 768px) {
     height: 450px;
   }
 }
@@ -76,13 +75,5 @@ const emit = defineEmits<{
     .contact-panel {
       flex-direction: column;
     }
-}
-
-.floating-form {
-  position: absolute;
-  top: 10%;
-  left: 50%;
-  transform: translateX(-50%);
-  z-index: 1000;
 }
 </style>

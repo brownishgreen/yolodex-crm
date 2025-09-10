@@ -76,8 +76,6 @@ defineEmits<{
   padding: 1.5rem 3rem;
   background-color: $primary-yellow;
   outline: 4px solid $outline-color;
-  display: flex;
-  flex-direction: column;
   overflow-y: auto;
   }
 
@@ -121,10 +119,6 @@ defineEmits<{
       margin: 0.4rem 0;
       color: #444;
     }
-
-    p:nth-child(odd) {
-      font-weight: bold;
-    }
   }
 
   // 自訂 scrollbar 美化
@@ -138,7 +132,7 @@ defineEmits<{
   }
 
   &::-webkit-scrollbar-thumb:hover {
-    background: transparent;
+    background: $primary-green;
   }
 }
 
@@ -156,7 +150,7 @@ defineEmits<{
     border-radius: 8px;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
     cursor: pointer;
-    transition: background-color 0.3s ease, transform 0.3s ease;
+    transition: transform 0.3s ease;
   }
 
   .contact-detail__button:first-child {
