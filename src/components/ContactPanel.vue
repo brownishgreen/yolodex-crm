@@ -1,36 +1,3 @@
-<template>
-  <div class="contact-panel">
-    <!-- <div class="floating-form">
-      <InteractionForm />
-    </div> -->
-    <ContactList
-      :contacts="contacts"
-      :selected="selectedContact"
-      @select="selectContact"
-    />
-    
-    <!-- desktop mode: show detail directly -->
-    <ContactDetail
-      v-if="!isMobile"
-      :contact="selectedContact"
-      @edit="$emit('edit', selectedContact)"
-      @delete="$emit('delete', selectedContact)"
-      :key="selectedContact?.id"
-      @open-add-interaction="$emit('open-add-interaction', selectedContact?.id)"
-    />
-    <!-- mobile mode: show detail in Modal -->
-    <Modal v-if="isMobile && isDetailOpen" @close="isDetailOpen = false">
-      <ContactDetail 
-      :contact="selectedContact"
-      @edit="$emit('edit', selectedContact)"
-      @delete="$emit('delete', selectedContact)"
-      :key="selectedContact?.id"
-      @open-add-interaction="$emit('open-add-interaction', selectedContact?.id)"
-      />
-    </Modal>
-  </div>
-</template>
-
 <script setup lang="ts">
 import ContactList from './ContactList.vue';
 import ContactDetail from './ContactDetail.vue';
@@ -71,6 +38,41 @@ function selectContact(contact: Contact) {
 
 
 </script>
+
+<template>
+  <div class="contact-panel">
+    <!-- <div class="floating-form">
+      <InteractionForm />
+    </div> -->
+    <ContactList
+      :contacts="contacts"
+      :selected="selectedContact"
+      @select="selectContact"
+    />
+    
+    <!-- desktop mode: show detail directly -->
+    <ContactDetail
+      v-if="!isMobile"
+      :contact="selectedContact"
+      @edit="$emit('edit', selectedContact)"
+      @delete="$emit('delete', selectedContact)"
+      :key="selectedContact?.id"
+      @open-add-interaction="$emit('open-add-interaction', selectedContact?.id)"
+    />
+    <!-- mobile mode: show detail in Modal -->
+    <Modal v-if="isMobile && isDetailOpen" @close="isDetailOpen = false">
+      <ContactDetail 
+      :contact="selectedContact"
+      @edit="$emit('edit', selectedContact)"
+      @delete="$emit('delete', selectedContact)"
+      :key="selectedContact?.id"
+      @open-add-interaction="$emit('open-add-interaction', selectedContact?.id)"
+      />
+    </Modal>
+  </div>
+</template>
+
+
 
 <style scoped lang="scss">
 @use '@/styles/variables' as *;

@@ -1,3 +1,17 @@
+<script setup lang="ts">
+import type { Contact, Interaction } from '@/types/contact';
+
+defineProps<{ contact: Contact | null }>()
+
+defineEmits<{
+  (e: 'edit', contact: Contact): void
+  (e: 'delete', contact: Contact): void
+  (e: 'open-add-interaction', contactId: string): void
+  (e: 'add-interaction', payload: { contactId: string; interaction: Interaction }): void
+}>()
+
+</script>
+
 <template>
   <div v-if="contact" class="contact-detail">
     <div class="contact-detail__info">
@@ -45,20 +59,6 @@
     </div>
   </div>
 </template>
-
-<script setup lang="ts">
-import type { Contact, Interaction } from '@/types/contact';
-
-defineProps<{ contact: Contact | null }>()
-
-defineEmits<{
-  (e: 'edit', contact: Contact): void
-  (e: 'delete', contact: Contact): void
-  (e: 'open-add-interaction', contactId: string): void
-  (e: 'add-interaction', payload: { contactId: string; interaction: Interaction }): void
-}>()
-
-</script>
 
 <style scoped lang="scss">
 .contact-detail {

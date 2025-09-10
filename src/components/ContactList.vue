@@ -1,48 +1,3 @@
-<template>
-  <div class="contact-list">
-    <aside class="contact-list__aside">
-      <div class="contact-list__search">
-        <input type="text" placeholder="Search contact..." class="contact-list__search-input" v-model="searchQuery"/>
-        <div class="sort-container">
-          <label for="sort">
-            <p class="sort-label">Sort by:</p>
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6 sort-icon">
-  <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 6h9.75M10.5 6a1.5 1.5 0 1 1-3 0m3 0a1.5 1.5 0 1 0-3 0M3.75 6H7.5m3 12h9.75m-9.75 0a1.5 1.5 0 0 1-3 0m3 0a1.5 1.5 0 0 0-3 0m-3.75 0H7.5m9-6h3.75m-3.75 0a1.5 1.5 0 0 1-3 0m3 0a1.5 1.5 0 0 0-3 0m-9.75 0h9.75" />
-</svg>
-          </label>
-          <select id="sort" v-model="selectedSort">
-            <option value="name">Name</option>
-            <option value="status">Status</option>
-            <option value="createdAt">Created Time</option>
-          </select>
-          <button @click="exportContactsToCSV" class="export-button">
-            <font-awesome-icon :icon="['fas', 'file-csv']" size="xl"/>
-          </button>
-        </div>
-      </div>
-      
-      <div class="contact-list__items">
-        <ul class="contact-items">
-          <li
-          v-for="contact in filteredContacts"
-          :key="contact.id"
-          :class="['contact-item', contact === selected && 'selected']"
-          @click="$emit('select', contact)"
-          >
-          {{ contact.name }}
-          <span
-          class="contact-item__status"
-          :class="contact.status.toLowerCase()"
-          >
-          {{ contact.status }}
-          </span>
-          </li>
-        </ul>
-      </div>
-    </aside>
-  </div>
-</template>
-
 <script setup lang="ts">
 import { ref, computed } from 'vue';
 import type { Contact } from '@/types/contact';
@@ -103,6 +58,51 @@ function exportContactsToCSV() {
   document.body.removeChild(link)
 }
 </script>
+
+<template>
+  <div class="contact-list">
+    <aside class="contact-list__aside">
+      <div class="contact-list__search">
+        <input type="text" placeholder="Search contact..." class="contact-list__search-input" v-model="searchQuery"/>
+        <div class="sort-container">
+          <label for="sort">
+            <p class="sort-label">Sort by:</p>
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6 sort-icon">
+  <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 6h9.75M10.5 6a1.5 1.5 0 1 1-3 0m3 0a1.5 1.5 0 1 0-3 0M3.75 6H7.5m3 12h9.75m-9.75 0a1.5 1.5 0 0 1-3 0m3 0a1.5 1.5 0 0 0-3 0m-3.75 0H7.5m9-6h3.75m-3.75 0a1.5 1.5 0 0 1-3 0m3 0a1.5 1.5 0 0 0-3 0m-9.75 0h9.75" />
+</svg>
+          </label>
+          <select id="sort" v-model="selectedSort">
+            <option value="name">Name</option>
+            <option value="status">Status</option>
+            <option value="createdAt">Created Time</option>
+          </select>
+          <button @click="exportContactsToCSV" class="export-button">
+            <font-awesome-icon :icon="['fas', 'file-csv']" size="xl"/>
+          </button>
+        </div>
+      </div>
+      
+      <div class="contact-list__items">
+        <ul class="contact-items">
+          <li
+          v-for="contact in filteredContacts"
+          :key="contact.id"
+          :class="['contact-item', contact === selected && 'selected']"
+          @click="$emit('select', contact)"
+          >
+          {{ contact.name }}
+          <span
+          class="contact-item__status"
+          :class="contact.status.toLowerCase()"
+          >
+          {{ contact.status }}
+          </span>
+          </li>
+        </ul>
+      </div>
+    </aside>
+  </div>
+</template>
 
 <style scoped lang="scss">
 

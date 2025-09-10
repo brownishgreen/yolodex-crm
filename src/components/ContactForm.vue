@@ -1,3 +1,42 @@
+<script setup lang="ts">
+import { reactive } from 'vue';
+import type { Contact } from '@/types/contact';
+
+const props = defineProps<{
+  contact?: Contact | null
+}>()
+
+const formDataSubmit = reactive<Omit<Contact, 'id' | 'createdAt' | 'updatedAt'>>({
+  name: props.contact?.name || '',
+  email: props.contact?.email || '',
+  phone: props.contact?.phone || '',
+  company: props.contact?.company || '',
+  jobTitle: props.contact?.jobTitle || '',
+  notes: props.contact?.notes || '',
+  status: props.contact?.status || 'active',
+  interactions: props.contact?.interactions || [],
+});
+
+
+
+function handleSubmit() {
+  const newContact: Contact = {
+    id: props.contact?.id ?? Date.now().toString(),
+    createdAt: props.contact?.createdAt ?? new Date(),
+    updatedAt: new Date(),
+    ...formDataSubmit
+  }
+
+  emit('submit', newContact)
+}
+
+
+const emit = defineEmits<{
+  (e: 'submit', contact: Contact): void
+}>()
+
+</script>
+
 <template>
   <div class="contact-form">
     <h2 style="text-align: center;" class="form-title">Create New Contact</h2>
@@ -37,45 +76,6 @@
     </form>
   </div>
 </template>
-
-<script setup lang="ts">
-import { reactive } from 'vue';
-import type { Contact } from '@/types/contact';
-
-const props = defineProps<{
-  contact?: Contact | null
-}>()
-
-const formDataSubmit = reactive<Omit<Contact, 'id' | 'createdAt' | 'updatedAt'>>({
-  name: props.contact?.name || '',
-  email: props.contact?.email || '',
-  phone: props.contact?.phone || '',
-  company: props.contact?.company || '',
-  jobTitle: props.contact?.jobTitle || '',
-  notes: props.contact?.notes || '',
-  status: props.contact?.status || 'active',
-  interactions: props.contact?.interactions || [],
-});
-
-
-
-function handleSubmit() {
-  const newContact: Contact = {
-    id: props.contact?.id ?? Date.now().toString(),
-    createdAt: props.contact?.createdAt ?? new Date(),
-    updatedAt: new Date(),
-    ...formDataSubmit
-  }
-
-  emit('submit', newContact)
-}
-
-
-const emit = defineEmits<{
-  (e: 'submit', contact: Contact): void
-}>()
-
-</script>
 
 <style scoped lang="scss">
 .contact-form {

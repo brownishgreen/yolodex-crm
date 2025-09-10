@@ -1,3 +1,9 @@
+<script setup lang="ts">
+defineEmits<{
+  (e: 'create'): void
+}>()
+</script>
+
 <template>
   <header>
     <div class="flex justify-between items-center">
@@ -9,11 +15,6 @@
   </header>
 </template>
 
-<script setup lang="ts">
-defineEmits<{
-  (e: 'create'): void
-}>()
-</script>
 <style scoped lang="scss">
 @use '@/styles/variables' as *;
 header {

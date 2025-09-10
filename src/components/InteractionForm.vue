@@ -1,30 +1,3 @@
-<template>
-  <form class="interaction-form" @submit.prevent="handleSubmit">
-    <div class="form-group">
-      <label for="type">Interaction Type</label>
-      <select v-model="form.type" id="type" required>
-        <option value="📞 Call">📞 Call</option>
-        <option value="📧 Email">📧 Email</option>
-        <option value="📅 Meeting">📅 Meeting</option>
-        <option value="📝 Note">📝 Note</option>
-        <option value="🍱 Lunch">🍱 Lunch</option>
-      </select>
-    </div>
-
-    <div class="form-group">
-      <label for="note">Note</label>
-      <textarea v-model="form.note" id="note" required></textarea>
-    </div>
-
-    <div class="form-group">
-      <label for="date">Date</label>
-      <input v-model="form.date" type="date" id="date" required>
-    </div>
-
-    <button type="submit" class="submit-btn">Submit</button>
-  </form>
-</template>
-
 <script setup lang="ts">
 import { reactive } from 'vue'
 import type { Interaction } from '@/types/contact'
@@ -60,6 +33,33 @@ function handleSubmit() {
   form.date = new Date().toISOString().slice(0, 10)
 }
 </script>
+
+<template>
+  <form class="interaction-form" @submit.prevent="handleSubmit">
+    <div class="form-group">
+      <label for="type">Interaction Type</label>
+      <select v-model="form.type" id="type" required>
+        <option value="📞 Call">📞 Call</option>
+        <option value="📧 Email">📧 Email</option>
+        <option value="📅 Meeting">📅 Meeting</option>
+        <option value="📝 Note">📝 Note</option>
+        <option value="🍱 Lunch">🍱 Lunch</option>
+      </select>
+    </div>
+
+    <div class="form-group">
+      <label for="note">Note</label>
+      <textarea v-model="form.note" id="note" required></textarea>
+    </div>
+
+    <div class="form-group">
+      <label for="date">Date</label>
+      <input v-model="form.date" type="date" id="date" required>
+    </div>
+
+    <button type="submit" class="submit-btn">Submit</button>
+  </form>
+</template>
 
 <style scoped lang="scss">
 .interaction-form {
