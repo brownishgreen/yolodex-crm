@@ -2,32 +2,42 @@
 import BaseHeader from './components/BaseHeader.vue'
 import BaseFooter from './components/BaseFooter.vue'
 import ContactPanel from './components/ContactPanel.vue'
-import { ref, nextTick } from 'vue'
+import { ref } from 'vue'
 import type { Contact, Interaction } from './types/contact'
 import { contactsData } from './data/contacts'
 import ContactForm from './components/ContactForm.vue'
 import Modal from './components/Modal.vue'
 import InteractionForm from './components/InteractionForm.vue'
 
-const isMobile = ref(window.innerWidth < 768)
-const isDetailOpen = ref(false)
-const selectedId = ref<string | null>(null)
+//Layout state
+const isMobileView = ref(window.innerWidth < 768)
+const isDetailModalOpen = ref(false)
+
+//Contact state
 const selectedContact = ref<Contact | null>(null)
-const isFormOpen = ref(false)
 const contacts = ref<Contact[]>(contactsData)
+
+//Form state
+const isFormModalOpen = ref(false)
 const editingContact = ref<Contact | null>(null)
-const isInteractionFormOpen = ref(false)
 const addingContactId = ref<string>('')
+const isInteractionFormModalOpen = ref(false)
+
 
 function selectContact(contact: Contact) {
   selectedContact.value = contact
-  if (isMobile.value) {
-    isDetailOpen.value = true
+  if (isMobileView.value) {
+    isDetailModalOpen.value = true
   }
 }
 
+function openEditForm(contact: Contact) {
+  editingContact.value = contact
+  isFormModalOpen.value = true
+}
+
 function handleContactSubmit(contact: Contact) {
-  const index = contacts.value.findIndex(c => c.id === contact.id)
+  const index = contacts.value.findIndex(contactItem => contactItem.id === contact.id)
   if (index !== -1) {
     //update the contact
     contacts.value.splice(index, 1, contact)
@@ -38,22 +48,23 @@ function handleContactSubmit(contact: Contact) {
     selectedContact.value = contact
   }
 
-  isFormOpen.value = false
+  isFormModalOpen.value = false
   editingContact.value = null
 }
 
-function openEditForm(contact: Contact) {
-  editingContact.value = contact
-  isFormOpen.value = true
+function handleDeleteContact(contact: Contact) {
+  contacts.value = contacts.value.filter(contactItem => contactItem.id !== contact.id)
+
+  if (selectedContact.value?.id === contact.id) {
+    selectedContact.value = null
+    isDetailModalOpen.value = false
+  }
 }
 
-function handleDeleteContact(contact: Contact) {
-  contacts.value = contacts.value.filter(client => client.id !== contact.id)
-
-  if (selectedId.value === contact.id) {
-    selectedId.value = null
-    isDetailOpen.value = false
-  }
+function handleOpenAddInteraction(id: string) {
+  if (!id) return
+  addingContactId.value = id            // 存起來
+  isInteractionFormModalOpen.value = true
 }
 
 function handleAddInteraction({ contactId, interaction }: {
@@ -61,14 +72,14 @@ function handleAddInteraction({ contactId, interaction }: {
   interaction: Interaction
 }) {
   console.log('[add] contactId =', contactId)
-  console.log('[add] contact ids =', contacts.value.map(c => c.id))
+  console.log('[add] contact ids =', contacts.value.map(contactItem => contactItem.id))
 
 
-  const idx = contacts.value.findIndex(c => c.id === contactId)
+  const idx = contacts.value.findIndex(contactItem => contactItem.id === contactId)
   console.log('[add] idx =', idx)
 
   if (idx === -1) {
-    isInteractionFormOpen.value = false
+    isInteractionFormModalOpen.value = false
     console.log('contact not found,about add contact')
     return
   }
@@ -94,21 +105,17 @@ function handleAddInteraction({ contactId, interaction }: {
   }
 
   // 4. 關掉表單
-  isInteractionFormOpen.value = false
+  isInteractionFormModalOpen.value = false
 }
 
-function handleOpenAddInteraction(id: string) {
-  if (!id) return
-  addingContactId.value = id            // 存起來
-  isInteractionFormOpen.value = true
-}
+
 
 </script>
 
 <template>
   <div class="container">
     <div class="card">
-      <BaseHeader @create="isFormOpen = true" />
+      <BaseHeader @create="isFormModalOpen = true" />
       <main class="body">
         <ContactPanel 
         :contacts="contacts"
@@ -116,16 +123,17 @@ function handleOpenAddInteraction(id: string) {
         @edit="openEditForm"
         @delete="handleDeleteContact"
         @open-add-interaction="handleOpenAddInteraction"
+        @select="selectContact"
         />
       </main>
       <!-- Modal for the create contactform -->
-      <Modal v-if="isFormOpen" @close="isFormOpen = false">
+      <Modal v-if="isFormModalOpen" @close="isFormModalOpen = false">
         <ContactForm 
         :contact="editingContact"
         @submit="handleContactSubmit" />
       </Modal>
       <!-- Modal for the create interaction form -->
-      <Modal v-if="isInteractionFormOpen" @close="isInteractionFormOpen = false">
+      <Modal v-if="isInteractionFormModalOpen" @close="isInteractionFormModalOpen = false">
         <InteractionForm
         :contact-id="addingContactId"
         @add="handleAddInteraction"
@@ -144,6 +152,9 @@ function handleOpenAddInteraction(id: string) {
   align-items: center;
   justify-content: center;
   background-image: url('https://images.unsplash.com/photo-1743444374283-06501bf51c11?q=80&w=1888&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D');
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
 
   .card {
     display: flex;
