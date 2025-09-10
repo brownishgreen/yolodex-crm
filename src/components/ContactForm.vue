@@ -39,7 +39,9 @@ const emit = defineEmits<{
 
 <template>
   <div class="contact-form">
-    <h2 style="text-align: center;" class="form-title">Create New Contact</h2>
+    <h2 style="text-align: center;" class="form-title">
+      {{ props.contact ? 'Edit Contact' : 'Create New Contact' }}
+    </h2>
     <form @submit.prevent="handleSubmit">
       <div class="form-group">
         <label for="name">Name</label>
