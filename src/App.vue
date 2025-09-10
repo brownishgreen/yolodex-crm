@@ -2,7 +2,7 @@
 import BaseHeader from './components/BaseHeader.vue'
 import BaseFooter from './components/BaseFooter.vue'
 import ContactPanel from './components/ContactPanel.vue'
-import { ref } from 'vue'
+import { onMounted, onUnmounted, ref } from 'vue'
 import type { Contact, Interaction } from './types/contact'
 import { contactsData } from './data/contacts'
 import ContactForm from './components/ContactForm.vue'
@@ -108,6 +108,17 @@ function handleAddInteraction({ contactId, interaction }: {
   isInteractionFormModalOpen.value = false
 }
 
+function handleResize() {
+  isMobileView.value = window.innerWidth < 768
+}
+
+onMounted(() => {
+  window.addEventListener('resize', handleResize)
+})
+
+onUnmounted(() => {
+  window.removeEventListener('resize', handleResize)
+})
 
 
 </script>
@@ -120,10 +131,13 @@ function handleAddInteraction({ contactId, interaction }: {
         <ContactPanel 
         :contacts="contacts"
         :selected="selectedContact"
+        :is-mobile-view="isMobileView"
+        :is-detail-modal-open="isDetailModalOpen"
         @edit="openEditForm"
         @delete="handleDeleteContact"
         @open-add-interaction="handleOpenAddInteraction"
         @select="selectContact"
+        @close-detail="isDetailModalOpen = false"
         />
       </main>
       <!-- Modal for the create contactform -->

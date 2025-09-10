@@ -9,64 +9,46 @@ import { contactsData } from '@/data/contacts';
 
 const props = defineProps<{
   contacts: Contact[]
+  selected: Contact | null
+  isMobileView: boolean
+  isDetailModalOpen: boolean
 }>();
 
-const isMobile = ref(false);
-const isDetailOpen = ref(false);
-const selectedId = ref<string | null>(props.contacts[0]?.id || null)
-const selectedContact = computed(() => 
-  props.contacts.find(c => c.id === selectedId.value) || null
-)
-
-
-function handleResize() {
-  isMobile.value = window.innerWidth < 768;
-}
-
-onMounted(() => {
-  handleResize();
-  window.addEventListener('resize', handleResize);
-});
-
-function selectContact(contact: Contact) {
-  selectedId.value = contact.id
-  if (isMobile.value) {
-    isDetailOpen.value = true
-  }
-}
-
-
+const emit = defineEmits<{
+  (e: 'select', contact: Contact): void
+  (e: 'edit', contact: Contact): void
+  (e: 'delete', contact: Contact): void
+  (e: 'open-add-interaction', id: string): void
+  (e: 'close-detail'): void
+}>()
 
 </script>
 
 <template>
   <div class="contact-panel">
-    <!-- <div class="floating-form">
-      <InteractionForm />
-    </div> -->
     <ContactList
       :contacts="contacts"
-      :selected="selectedContact"
-      @select="selectContact"
+      :selected="props.selected"
+      @select="contact => emit('select', contact)"
     />
     
     <!-- desktop mode: show detail directly -->
     <ContactDetail
-      v-if="!isMobile"
-      :contact="selectedContact"
-      @edit="$emit('edit', selectedContact)"
-      @delete="$emit('delete', selectedContact)"
-      :key="selectedContact?.id"
-      @open-add-interaction="$emit('open-add-interaction', selectedContact?.id)"
+      v-if="!props.isMobileView && props.selected"
+      :contact="props.selected"
+      @edit="contact => emit('edit', contact)"
+      @delete="contact => emit('delete', contact)"
+      :key="props.selected?.id"
+      @open-add-interaction="id => emit('open-add-interaction', id)"
     />
     <!-- mobile mode: show detail in Modal -->
-    <Modal v-if="isMobile && isDetailOpen" @close="isDetailOpen = false">
+    <Modal v-if="props.isMobileView && props.isDetailModalOpen" @close="$emit('close-detail')">
       <ContactDetail 
-      :contact="selectedContact"
-      @edit="$emit('edit', selectedContact)"
-      @delete="$emit('delete', selectedContact)"
-      :key="selectedContact?.id"
-      @open-add-interaction="$emit('open-add-interaction', selectedContact?.id)"
+      :contact="props.selected"
+      @edit="contact => emit('edit', contact)"
+      @delete="contact => emit('delete', contact)"
+      :key="props.selected?.id"
+      @open-add-interaction="id => emit('open-add-interaction', id)"
       />
     </Modal>
   </div>
