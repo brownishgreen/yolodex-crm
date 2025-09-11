@@ -9,7 +9,8 @@ defineEmits<{
     <div class="flex justify-between items-center">
       <img src="/src/assets/image/yolodex-logo.png" alt="Yolodex Logo"/>
       <div class="flex justify-between items-center">
-        <button @click="$emit('create')" class="create-contact-btn"> + New</button>
+        <button @click="$emit('create')" class="create-contact-btn">
+          <font-awesome-icon icon="fa-solid fa-plus" class="interaction-add-btn-icon" /> Contact</button>
       </div>
     </div>
   </header>

@@ -2,12 +2,10 @@
 import { reactive } from 'vue'
 import type { Interaction } from '@/types/contact'
 
-// 父層會傳入這個 contact 對象
 const props = defineProps<{
   contactId: string
 }>()
 
-// 這裡 emit 的 payload 是 { contactId, interaction }
 const emit = defineEmits<{
   (e: 'add', payload: { contactId: string; interaction: Interaction }): void
 }>()
