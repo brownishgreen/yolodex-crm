@@ -161,8 +161,9 @@ onUnmounted(() => {
 <style scoped lang="scss">
 @use '@/styles/variables' as *;
 .container {
-  height: 100vh;
+  min-height: 100dvh;
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
   background-image: url('https://images.unsplash.com/photo-1743444374283-06501bf51c11?q=80&w=1888&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D');
@@ -176,8 +177,8 @@ onUnmounted(() => {
     border-radius: 25px;
     background: $primary-yellow;
     overflow: hidden;
-
-
+    margin-top: 5px;
+    margin-bottom: 5px;
   }
 }
 

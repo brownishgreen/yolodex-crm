@@ -45,6 +45,10 @@ header {
   box-shadow: 0 0 25px 0 rgba(31, 30, 30, 0.32);
   cursor: pointer;
   transition: all 0.2s ease; // smooth hover + click 效果
+
+  @media (max-width: 768px) {
+    font-size:0.6rem;
+}
 }
 
 .create-contact-btn:active {
