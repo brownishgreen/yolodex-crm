@@ -15,7 +15,10 @@ const isDetailModalOpen = ref(false)
 
 //Contact state
 const selectedContact = ref<Contact | null>(null)
-const contacts = ref<Contact[]>(contactsData)
+const contacts = ref<Contact[]>(contactsData.map(c => ({
+  ...c,
+  interactions: [...c.interactions].sort((a, b)=> b.date.getTime() - a.date.getTime())
+})))
 
 //Form state
 const isFormModalOpen = ref(false)
