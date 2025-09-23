@@ -17,9 +17,11 @@ const searchQuery = ref('')
 const selectedSort = ref<'name' | 'createdAt' | 'status'>('name')
 const filteredContacts = computed(() =>
   props.contacts
-  .filter(contact =>
-    contact.name.toLowerCase().includes(searchQuery.value.toLowerCase())
-  )
+    .filter(contact => {
+      const q = searchQuery.value.trim().toLowerCase()
+      if (!q) return true
+      return contact.name.toLowerCase().includes(q)
+  })
   .sort((a, b) => {
     if (selectedSort.value === 'name') {
       return a.name.localeCompare(b.name)

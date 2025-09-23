@@ -74,40 +74,35 @@ function handleAddInteraction({ contactId, interaction }: {
   contactId: string
   interaction: Interaction
 }) {
-  console.log('[add] contactId =', contactId)
-  console.log('[add] contact ids =', contacts.value.map(contactItem => contactItem.id))
+  const contactIndex = contacts.value.findIndex(contactItem => contactItem.id === contactId)
 
-
-  const idx = contacts.value.findIndex(contactItem => contactItem.id === contactId)
-  console.log('[add] idx =', idx)
-
-  if (idx === -1) {
+  if (contactIndex === -1) {
     isInteractionFormModalOpen.value = false
     console.log('contact not found,about add contact')
     return
   }
 
-  const old = contacts.value[idx]
+  const old = contacts.value[contactIndex]
 
-  // 1. 產生全新的 contact 物件
+  // 1. Create a new contact object
   const updated: Contact = {
     ...old,
     interactions: [
       ...(old.interactions ?? []),
       interaction
-    ].sort((a, b) => b.date.getTime() - a.date.getTime()), // 新→舊
+    ].sort((a, b) => b.date.getTime() - a.date.getTime()), // new -> old
     updatedAt: new Date()
   }
 
-  // 2. 用 splice 把新物件塞回去
-  contacts.value.splice(idx, 1, updated)
+  // 2. Use splice to put the new object back
+  contacts.value.splice(contactIndex, 1, updated)
 
-  // 3. 同步選取中的 contact（保證引用一致）
+  // 3. Synchronize the selected contact (ensure consistent reference)
   if (selectedContact.value?.id === contactId) {
     selectedContact.value = updated
   }
 
-  // 4. 關掉表單
+  // 4. Close the form
   isInteractionFormModalOpen.value = false
 }
 
@@ -169,7 +164,7 @@ onUnmounted(() => {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  background-image: url('https://images.unsplash.com/photo-1743444374283-06501bf51c11?q=80&w=1888&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D');
+  background-image: url('https://images.unsplash.com/photo-1617957772097-93dc166cd335?q=80&w=3732&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D');
   background-repeat: no-repeat;
   background-size: cover;
   background-position: center;
