@@ -40,7 +40,8 @@ A lightweight single-page CRM for managing contacts and their interactions.
 
 ## Tech Stack 技術棧
 
-- **Vue 3** – Composition API + `<script setup>`  
+- **Vue 3** – Composition API + `<script setup>`
+- **Pinia** – 全域狀態管理（管理 contacts / forms / interactions）
 - **TypeScript** – 強型別模型（`types/contact.ts`）  
 - **Vite** – 開發環境  
 - **SCSS Modules + CSS Variables** – 樣式模組化  
