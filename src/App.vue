@@ -4,111 +4,23 @@ import BaseFooter from './components/BaseFooter.vue'
 import ContactPanel from './components/ContactPanel.vue'
 import { onMounted, onUnmounted, ref } from 'vue'
 import type { Contact, Interaction } from './types/contact'
-import { contactsData } from './data/contacts'
 import ContactForm from './components/ContactForm.vue'
 import Modal from './components/Modal.vue'
 import InteractionForm from './components/InteractionForm.vue'
+import { storeToRefs } from 'pinia'
+import { useContactStore } from './stores/contactStore'
 
-//Layout state
-const isMobileView = ref(window.innerWidth < 768)
-const isDetailModalOpen = ref(false)
+const contactStore = useContactStore()
+const { 
+  contacts, selectedContact, isMobileView, isDetailModalOpen, 
+  isFormModalOpen, editingContact, isInteractionFormModalOpen, addingContactId 
+} = storeToRefs(contactStore)
 
-//Contact state
-const selectedContact = ref<Contact | null>(null)
-const contacts = ref<Contact[]>(contactsData.map(c => ({
-  ...c,
-  interactions: [...c.interactions].sort((a, b)=> b.date.getTime() - a.date.getTime())
-})))
+const { 
+  selectContact, openEditForm, handleContactSubmit, handleDeleteContact, 
+  handleOpenAddInteraction, handleAddInteraction, handleResize 
+} = contactStore
 
-//Form state
-const isFormModalOpen = ref(false)
-const editingContact = ref<Contact | null>(null)
-const addingContactId = ref<string>('')
-const isInteractionFormModalOpen = ref(false)
-
-
-function selectContact(contact: Contact) {
-  selectedContact.value = contact
-  if (isMobileView.value) {
-    isDetailModalOpen.value = true
-  }
-}
-
-function openEditForm(contact: Contact) {
-  editingContact.value = contact
-  isFormModalOpen.value = true
-}
-
-function handleContactSubmit(contact: Contact) {
-  const index = contacts.value.findIndex(contactItem => contactItem.id === contact.id)
-  if (index !== -1) {
-    //update the contact
-    contacts.value.splice(index, 1, contact)
-    selectedContact.value = { ...contact }
-  } else {
-    //add the new contact
-    contacts.value.push(contact)
-    selectedContact.value = contact
-  }
-
-  isFormModalOpen.value = false
-  editingContact.value = null
-}
-
-function handleDeleteContact(contact: Contact) {
-  contacts.value = contacts.value.filter(contactItem => contactItem.id !== contact.id)
-
-  if (selectedContact.value?.id === contact.id) {
-    selectedContact.value = null
-    isDetailModalOpen.value = false
-  }
-}
-
-function handleOpenAddInteraction(id: string) {
-  if (!id) return
-  addingContactId.value = id            // 存起來
-  isInteractionFormModalOpen.value = true
-}
-
-function handleAddInteraction({ contactId, interaction }: {
-  contactId: string
-  interaction: Interaction
-}) {
-  const contactIndex = contacts.value.findIndex(contactItem => contactItem.id === contactId)
-
-  if (contactIndex === -1) {
-    isInteractionFormModalOpen.value = false
-    console.log('contact not found,about add contact')
-    return
-  }
-
-  const old = contacts.value[contactIndex]
-
-  // 1. Create a new contact object
-  const updated: Contact = {
-    ...old,
-    interactions: [
-      ...(old.interactions ?? []),
-      interaction
-    ].sort((a, b) => b.date.getTime() - a.date.getTime()), // new -> old
-    updatedAt: new Date()
-  }
-
-  // 2. Use splice to put the new object back
-  contacts.value.splice(contactIndex, 1, updated)
-
-  // 3. Synchronize the selected contact (ensure consistent reference)
-  if (selectedContact.value?.id === contactId) {
-    selectedContact.value = updated
-  }
-
-  // 4. Close the form
-  isInteractionFormModalOpen.value = false
-}
-
-function handleResize() {
-  isMobileView.value = window.innerWidth < 768
-}
 
 onMounted(() => {
   window.addEventListener('resize', handleResize)

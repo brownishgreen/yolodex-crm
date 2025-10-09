@@ -1,4 +1,5 @@
 import { createApp } from 'vue'
+import { createPinia } from 'pinia'
 import './assets/main.css'
 import App from './App.vue'
 
@@ -8,4 +9,7 @@ import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 
 library.add(faUser, faSearch, faPlus, faFileCsv)
 
-createApp(App).component('font-awesome-icon', FontAwesomeIcon).mount('#app')
+const app = createApp(App)
+app.component('font-awesome-icon', FontAwesomeIcon)
+app.use(createPinia())
+app.mount('#app')
