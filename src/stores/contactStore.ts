@@ -5,9 +5,9 @@ import { contactsData } from "@/data/contacts"
 
 export const useContactStore = defineStore('contact', () => {
   //Contact state
-  const contacts = ref<Contact[]>(contactsData.map(c => ({
-    ...c,
-    interactions: [...c.interactions].sort((a, b) => b.date.getTime() - a.date.getTime())
+  const contacts = ref<Contact[]>(contactsData.map(contact => ({
+    ...contact,
+    interactions: [...contact.interactions].sort((a, b) => b.date.getTime() - a.date.getTime())
   })))
   const selectedContact = ref<Contact | null>(null)
 
@@ -64,7 +64,7 @@ export const useContactStore = defineStore('contact', () => {
 
   function handleOpenAddInteraction(id: string) {
     if (!id) return
-    addingContactId.value = id            // 存起來
+    addingContactId.value = id            // store the id of the contact to add interaction to
     isInteractionFormModalOpen.value = true
   }
 
@@ -76,7 +76,7 @@ export const useContactStore = defineStore('contact', () => {
 
     if (contactIndex === -1) {
       isInteractionFormModalOpen.value = false
-      console.log('contact not found, please add contact first')
+      console.error('contact not found, please add contact first')
       return
     }
 

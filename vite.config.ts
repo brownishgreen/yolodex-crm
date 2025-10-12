@@ -1,4 +1,4 @@
-import { defineConfig } from 'vite'
+import { defineConfig } from 'vitest/config'
 import vue from '@vitejs/plugin-vue'
 import { fileURLToPath } from 'node:url'
 import { URL } from 'node:url'
@@ -18,5 +18,11 @@ export default defineConfig({
         additionalData: `@use "@/styles/variables" as *;`
       }
     }
+  },
+  test: {
+    globals: true,
+    environment: 'jsdom',
+    setupFiles: './tests/setup.ts',
+    include: ['src/**/*.{test,spec}.{js,ts,jsx,tsx}', 'tests/**/*.spec.{js,ts}']
   }
 })
